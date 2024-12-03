@@ -1,0 +1,170 @@
+.header {
+  width: 100%;
+  height: auto;
+  background: #111111;
+  position: relative;
+}
+
+.container {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.oferts {
+  background: var(--red);
+  width: 100%;
+  text-align: center;
+  padding: 10px 0px;
+  font-weight: 600;
+  color: white;
+  overflow-x: hidden;
+}
+
+.oferts p {
+  font-size: 13px;
+}
+
+.navbar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  padding: 15px 15px;
+  gap: 10px;
+}
+
+.hamburguer button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.hamburguer span {
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo img {
+  width: 200px;
+  height: auto;
+}
+
+.contact {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.hamburguer i,
+.contact i {
+  display: flex;
+  align-items: center;
+}
+
+.contact span {
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* List Nav */
+
+.list {
+  transform: translateX(-350px);
+  background-color: rgb(255, 255, 255);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 350px;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-wrap: nowrap;
+  padding: 20px 20px 50px 20px;
+  gap: 15px;
+  box-shadow: 10px 2px 22px -17px rgba(0, 0, 0, 0.402);
+  transition: all 0.3s ease-in-out;
+}
+
+.list.show {
+  transform: translateX(0px);
+}
+
+.list .title {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.list .title button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.list .title button i {
+  display: flex;
+  align-items: center;
+}
+
+.list li {
+  width: 100%;
+}
+
+.list li a {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  padding: 15px 10px;
+}
+
+.list li i {
+  display: flex;
+  align-items: center;
+}
+
+.list li span {
+  color: rgb(52, 52, 52);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .oferts p {
+    overflow-x: hidden;
+    text-wrap: nowrap;
+    font-size: 10px;
+  }
+
+  .hamburguer,
+  .contact {
+    width: 32px;
+    justify-content: center;
+  }
+
+  .hamburguer span,
+  .contact span {
+    display: none;
+  }
+
+  .logo img {
+    width: 190px;
+  }
+}
