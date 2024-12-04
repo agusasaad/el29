@@ -1,42 +1,20 @@
-import CreditCard from '@/assets/icons/CreditCard'
 import styles from './Medios_de_pago.module.css'
-import BankTranfer from '@/assets/icons/BankTranfer'
-import Money from '@/assets/icons/Money'
 import CarrucelPago from './carrucel_metodo_de_pago/CarrucelPago'
+import { data } from './data'
 
 const Medios_de_pago = () => {
   return (
     <section className={styles.container}>
       <div className={styles.containerDesktop}>
-        <div className={styles.metodo}>
-          <i>
-            <CreditCard color='var(--red)' />
-          </i>
-          <div className={styles.text}>
-            <h3>Pagá en cuotas</h3>
-            <p>Hasta X cuotas sin interés</p>
+        {data.map((item, index) => (
+          <div className={styles.metodo} key={index}>
+            <i>{item.icon}</i>
+            <div className={styles.text}>
+              <h3>{item.title}</h3>
+              <p>{item.offert}</p>
+            </div>
           </div>
-        </div>
-
-        <div className={styles.metodo}>
-          <i>
-            <BankTranfer color='var(--red)' />
-          </i>
-          <div className={styles.text}>
-            <h3>Transferencia</h3>
-            <p>15% descuento pagando con transferencia</p>
-          </div>
-        </div>
-
-        <div className={styles.metodo}>
-          <i>
-            <Money color='var(--red)' />
-          </i>
-          <div className={styles.text}>
-            <h3>Efectivo</h3>
-            <p>20% descuento pagando en efectivo</p>
-          </div>
-        </div>
+        ))}
       </div>
       <CarrucelPago />
     </section>

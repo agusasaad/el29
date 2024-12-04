@@ -35,6 +35,7 @@
 .metodo .text {
   display: flex;
   flex-direction: column;
+  gap: 3px;
 }
 
 .text h3 {
@@ -45,7 +46,7 @@
 
 .text p {
   color: #717171;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 @media (max-width: 1200px) {
