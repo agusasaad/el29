@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { destacados } from './data'
 import styles from './Featured.module.css'
+import Link from 'next/link'
 
 const Featured = () => {
   return (
@@ -15,7 +16,11 @@ const Featured = () => {
         </div>
         <div className={styles.cards}>
           {destacados.map((item, index) => (
-            <div key={index} className={styles.product}>
+            <Link
+              href={`/detail/${item.id}`}
+              key={index}
+              className={styles.product}
+            >
               <Image
                 src={item.image}
                 alt={item.name}
@@ -27,7 +32,7 @@ const Featured = () => {
                 <p>{item.name}</p>
                 <button>Ver producto</button>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

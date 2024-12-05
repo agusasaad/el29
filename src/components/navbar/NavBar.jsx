@@ -2,7 +2,7 @@
 import Menu from '@/assets/icons/Menu'
 import styles from './NavBar.module.css'
 import Image from 'next/image'
-import logo from '@/assets/images/logo_nav.svg'
+import logo from '@/assets/images/logo.png'
 import Contact from '@/assets/icons/Contact'
 import Link from 'next/link'
 import ListNav from './ListNav'
@@ -28,9 +28,9 @@ const NavBar = () => {
               <span>CATEGORIAS</span>
             </button>
           </div>
-          <div className={styles.logo}>
+          <Link href={'/'} className={styles.logo}>
             <Image src={logo} alt='logo' width={200} height={200} />
-          </div>
+          </Link>
           <Link href={'/'} className={styles.contact}>
             <i>
               <Contact color='white' width='30px' height='30px' />

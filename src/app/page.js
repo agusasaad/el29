@@ -7,7 +7,6 @@ import Featured from '@/components/featured/Featured'
 export default function Home() {
   return (
     <div className={styles.page}>
-      <NavBar />
       <main className={styles.main}>
         <Carrucel />
         <Medios_de_pago />
