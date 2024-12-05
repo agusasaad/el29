@@ -1,13 +1,12 @@
 'use client'
 import styles from './page.module.css'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import { Carousel } from 'react-responsive-carousel'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
-import { useEffect, useRef, useState } from 'react'
 import { destacados } from '@/components/featured/data'
 import Link from 'next/link'
-import Image from 'next/image'
 import Whatsapp from '@/assets/icons/Whatsapp'
+import MiniCard from '@/components/cardsComponent/miniCard/MiniCard'
 const Detail = () => {
   const { id } = useParams()
   const detail = destacados.find((product) => product.id === id)
@@ -64,6 +63,17 @@ const Detail = () => {
               <span>Hacer mi pedido</span>
             </button>
           </div>
+        </div>
+      </div>
+
+      <div className={styles.similars}>
+        <div className={styles.title}>
+          <h2>Productos similares</h2>
+        </div>
+        <div className={styles.similars_container}>
+          {destacados.map((item, index) => (
+            <MiniCard key={index} item={item} />
+          ))}
         </div>
       </div>
     </div>
