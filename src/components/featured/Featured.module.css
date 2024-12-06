@@ -70,11 +70,15 @@
   .container {
     margin: 40px 0px;
   }
-  .title h3 {
-    font-size: 18px;
-    text-wrap: balance;
+  .title {
+    width: 100%;
     padding: 0px 10px;
-    color: black;
+  }
+
+  .title h3 {
+    font-size: 16px;
+    text-align: start;
+    text-wrap: balance;
   }
 
   .cards {

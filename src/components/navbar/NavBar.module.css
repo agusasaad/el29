@@ -38,6 +38,11 @@
   gap: 10px;
 }
 
+.hamburguer {
+  width: 100%;
+  max-width: 280px;
+}
+
 .hamburguer button {
   display: flex;
   flex-direction: row;
@@ -45,11 +50,17 @@
   gap: 10px;
 }
 
-.hamburguer span {
-  color: white;
-  font-size: 16px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
+.buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 30px;
+}
+
+.login {
+  display: flex;
+  align-items: center;
+  gap: 7px;
 }
 
 .logo {
@@ -70,16 +81,20 @@
 }
 
 .hamburguer i,
-.contact i {
+.contact i,
+.login i {
   display: flex;
   align-items: center;
 }
 
-.contact span {
+.hamburguer span,
+.contact span,
+.login span {
   color: white;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 /* List Nav */
@@ -147,7 +162,7 @@
   font-weight: 500;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .oferts p {
     overflow-x: hidden;
     text-wrap: nowrap;
@@ -156,16 +171,23 @@
 
   .hamburguer,
   .contact {
-    width: 32px;
+    width: min-content;
     justify-content: center;
   }
 
   .hamburguer span,
-  .contact span {
+  .contact span,
+  .login span {
     display: none;
   }
 
   .logo img {
     width: 190px;
+  }
+}
+
+@media (max-width: 500px) {
+  .logo img {
+    width: 150px;
   }
 }
