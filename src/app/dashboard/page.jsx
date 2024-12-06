@@ -27,7 +27,7 @@ const Dashboard = () => {
     return null
   }
 
-  return <div>Dashboard</div>
+  return <div>Dashboard.</div>
 }
 
 export default Dashboard
