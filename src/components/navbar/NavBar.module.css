@@ -1,3 +1,4 @@
+/* Nav bar */
 .header {
   width: 100%;
   height: auto;
@@ -97,6 +98,39 @@
   text-transform: uppercase;
 }
 
+.user {
+  position: relative;
+  cursor: pointer;
+}
+
+.user .logOut {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 150px;
+  color: black;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.user:hover .logOut {
+  visibility: visible;
+  opacity: 1;
+}
+
+.logOut button {
+  background: white;
+  color: black;
+  width: 100%;
+  padding: 10px 0px;
+}
+
 /* List Nav */
 
 .list {
@@ -112,7 +146,7 @@
   align-items: center;
   text-wrap: nowrap;
   padding: 20px 20px 50px 20px;
-  gap: 15px;
+  gap: 20px;
   box-shadow: 10px 2px 22px -17px rgba(0, 0, 0, 0.402);
   transition: all 0.3s ease-in-out;
   z-index: 1000;
@@ -125,8 +159,8 @@
 .list .title {
   width: 100%;
   display: flex;
-  align-items: center;
   justify-content: flex-end;
+  align-items: center;
 }
 
 .list .title button {
@@ -137,6 +171,29 @@
 .list .title button i {
   display: flex;
   align-items: center;
+}
+
+.categorias {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.categorias h3 {
+  color: rgb(52, 52, 52);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.list ul {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
 }
 
 .list li {
@@ -159,8 +216,10 @@
 .list li span {
   color: rgb(52, 52, 52);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
 }
+
+/* Login */
 
 .forgetPassword {
   width: 100%;
@@ -200,5 +259,9 @@
 @media (max-width: 500px) {
   .logo img {
     width: 150px;
+  }
+
+  .user .logOut {
+    top: 60px;
   }
 }

@@ -6,19 +6,35 @@ import logo from '@/assets/images/logo.png'
 import Contact from '@/assets/icons/Contact'
 import Link from 'next/link'
 import ListNav from './ListNav'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import User from '@/assets/icons/User'
 import Modal from '../modal/Modal'
-import Input from '../form/Input'
-import Form from '../form/Form'
-import ButtonSubmit from '../form/ButtonSubmit'
+import Login from './Login'
+import { supabase } from '@/supabase'
 
 const NavBar = () => {
-  const [showMenu, setSHowMenu] = useState(false)
+  const [showMenu, setShowMenu] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [currentUser, setCurrentUser] = useState(null)
 
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'))
+    if (user) setCurrentUser(user)
+  }, [])
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut()
+    localStorage.clear()
+    window.location.reload()
+
+    if (error) {
+      console.error('Error al cerrar sesión:', error.message)
+      return
+    }
+  }
 
   return (
     <header className={styles.header}>
@@ -30,57 +46,64 @@ const NavBar = () => {
           <div className={styles.hamburguer}>
             <button
               aria-label='Abrir menu'
-              onClick={() => setSHowMenu(!showMenu)}
+              onClick={() => setShowMenu(!showMenu)}
             >
               <i>
                 <Menu color='white' width='35px' height='35px' />
               </i>
-              <span>CATEGORIAS</span>
+              <span>MENU</span>
             </button>
           </div>
           <Link href={'/'} className={styles.logo}>
             <Image src={logo} alt='logo' width={200} height={200} />
           </Link>
-          <div className={styles.buttons}>
-            <button
-              className={styles.login}
-              aria-label='Iniciar Sesión'
-              onClick={() => openModal()}
-            >
-              <i>
-                <User color='white' width='33px' height='33px' />
-              </i>
-              <span>Iniciar Sesión</span>
-            </button>
-            <Link href={'/'} className={styles.contact}>
-              <i>
-                <Contact color='white' width='30px' height='30px' />
-              </i>
-              <span>CONTACTO</span>
-            </Link>
-          </div>
+
+          {!currentUser ? (
+            <div className={styles.buttons}>
+              <button
+                className={styles.login}
+                aria-label='Iniciar Sesión'
+                onClick={() => openModal()}
+              >
+                <i>
+                  <User color='white' width='33px' height='33px' />
+                </i>
+                <span>Iniciar Sesión</span>
+              </button>
+              <Link href={'/'} className={styles.contact}>
+                <i>
+                  <Contact color='white' width='30px' height='30px' />
+                </i>
+                <span>CONTACTO</span>
+              </Link>
+            </div>
+          ) : (
+            <div className={styles.user}>
+              <button
+                className={styles.login}
+                aria-label='User'
+                style={{ pointerEvents: 'none' }}
+              >
+                <i>
+                  <User color='white' width='33px' height='33px' />
+                </i>
+                <span>{currentUser?.email}</span>
+              </button>
+
+              <div className={styles.logOut}>
+                <button onClick={handleLogout}>Cerra sesión</button>
+              </div>
+            </div>
+          )}
         </div>
       </nav>
-      <ListNav setSHowMenu={setSHowMenu} showMenu={showMenu} />
+      <ListNav
+        setShowMenu={setShowMenu}
+        showMenu={showMenu}
+        currentUser={currentUser}
+      />
       <Modal isModalOpen={isModalOpen} onClose={closeModal}>
-        <Form>
-          <Input
-            title={'Correo electrónico *'}
-            type='email'
-            placeholder={'ejemplo@mail.com'}
-            name={'email'}
-          />
-          <Input
-            title={'Contraseña *'}
-            type='password'
-            placeholder={'Contraseña'}
-            name={'password'}
-          />
-          <ButtonSubmit text={'Iniciar sesión'} type={'submit'} />
-          <div className={styles.forgetPassword}>
-            <button>¿Olvidaste tu contraseña?</button>
-          </div>
-        </Form>
+        <Login onClose={closeModal} />
       </Modal>
     </header>
   )

@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom'
 import styles from './Modal.module.css'
 
 const Modal = ({ isModalOpen, onClose, children }) => {
@@ -8,7 +9,7 @@ const Modal = ({ isModalOpen, onClose, children }) => {
     }
   }
 
-  return (
+  return createPortal(
     <div className={styles.overlay} onClick={handleClose}>
       <div className={styles.modal}>
         <button className={styles.closeButton} onClick={onClose}>
@@ -16,7 +17,8 @@ const Modal = ({ isModalOpen, onClose, children }) => {
         </button>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
 

@@ -7,6 +7,7 @@ const ButtonSubmit = ({
   disabled,
   backgroundColor,
   color,
+  isLoading,
 }) => {
   return (
     <button
@@ -20,7 +21,7 @@ const ButtonSubmit = ({
       onClick={onClick}
       disabled={disabled}
     >
-      {text}
+      {isLoading ? <span className={styles.loader}></span> : text}
     </button>
   )
 }
