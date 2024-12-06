@@ -162,6 +162,17 @@
   font-weight: 500;
 }
 
+.forgetPassword {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.forgetPassword button {
+  font-size: 13px;
+  color: black;
+}
+
 @media (max-width: 900px) {
   .oferts p {
     overflow-x: hidden;

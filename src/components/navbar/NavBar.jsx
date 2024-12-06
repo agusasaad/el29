@@ -77,6 +77,9 @@ const NavBar = () => {
             name={'password'}
           />
           <ButtonSubmit text={'Iniciar sesión'} type={'submit'} />
+          <div className={styles.forgetPassword}>
+            <button>¿Olvidaste tu contraseña?</button>
+          </div>
         </Form>
       </Modal>
     </header>
