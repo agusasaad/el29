@@ -88,6 +88,7 @@ const Dashboard = () => {
       <div className={styles.content}>
         <ButtonControl handleModal={handleModal} setTypeTable={setTypeTable} />
       </div>
+      <Table data={typeTable === 'products' ? productos : categorias} />
       <Modal isModalOpen={isModalOpen} onClose={closeModal}>
         {type === 'product' ? (
           <FormProduct onClose={closeModal} categorias={categorias} />
@@ -95,8 +96,6 @@ const Dashboard = () => {
           <FormCategory onClose={closeModal} />
         )}
       </Modal>
-
-      <Table data={typeTable === 'products' ? productos : categorias} />
     </div>
   )
 }

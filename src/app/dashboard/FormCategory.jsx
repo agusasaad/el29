@@ -24,6 +24,7 @@ const FormCategory = ({ onClose }) => {
       alert('Categoria creado con éxito')
 
       onClose()
+      window.location.reload()
     } catch (error) {
       console.error(error.message)
       alert(`Hubo un error: ${error.message}`)

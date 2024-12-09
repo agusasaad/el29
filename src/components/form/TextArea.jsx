@@ -15,7 +15,6 @@ const TextArea = ({
         id={id}
         className={styles.textArea}
         placeholder={placeholder}
-        maxLength={50}
         defaultValue={defaultValue}
         onChange={onChange}
         required={required}

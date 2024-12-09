@@ -70,12 +70,17 @@
   font-size: 20px;
   font-weight: 400;
   color: rgb(42, 42, 42);
+  padding-bottom: 3px;
+}
+
+.selected {
+  border-bottom: 3px solid var(--red);
 }
 
 .button_control .button_create {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
 }
 
 .button_create button {
@@ -89,4 +94,38 @@
 .button_create button i {
   display: flex;
   align-items: center;
+}
+
+@media (max-width: 750px) {
+  .container {
+    padding: 20px 15px;
+  }
+  .container h2 {
+    font-size: 35px;
+    letter-spacing: -0.5px;
+  }
+
+  .content .button_control {
+    width: 100%;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+    margin: 10px 0px;
+  }
+
+  .button_control .button_products button {
+    font-size: 16px;
+  }
+
+  .button_create button {
+    padding: 10px 8px;
+    gap: 5px;
+    font-size: 13px;
+    color: inherit;
+  }
+
+  .icon {
+    width: 18px;
+    height: 18px;
+  }
 }

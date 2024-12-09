@@ -1,6 +1,8 @@
+import styles from './../../app/dashboard/page.module.css'
 const Plus = ({ height = '24px', width = '24px', color = 'black' }) => {
   return (
     <svg
+      className={styles.icon}
       stroke='currentColor'
       fill={color}
       strokeWidth={0}

@@ -4,7 +4,9 @@ import styles from './Card.module.css'
 const Card = ({ item }) => {
   return (
     <Link href={`/detail/${item.id}`} className={styles.product}>
-      <Image src={item.image} alt={item.name} width={500} height={500} />
+      <div className={styles.conteiner_img}>
+        <Image src={item.images[0]} alt={item.name} width={500} height={500} />
+      </div>
       <div className={styles.info}>
         <span>${item.price}</span>
         <p>{item.name}</p>

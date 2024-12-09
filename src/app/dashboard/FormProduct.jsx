@@ -54,6 +54,8 @@ const FormProduct = ({ onClose, categorias }) => {
       alert('Producto creado con éxito')
 
       onClose()
+
+      window.location.reload()
     } catch (error) {
       console.error(error.message)
       alert(`Hubo un error: ${error.message}`)
@@ -69,18 +71,21 @@ const FormProduct = ({ onClose, categorias }) => {
         type={'text'}
         title={'Nombre *'}
         placeholder={'Nombre del producto'}
+        required={true}
       />
       <Input
         name={'price'}
         type={'number'}
         title={'Precio *'}
-        placeholder={'Precio del producto'}
+        placeholder={`Precio del producto sin . ni  ,`}
+        required={true}
       />
       <Input
         name={'stock'}
         type={'number'}
         title={'Stock *'}
         placeholder={'Stock del producto'}
+        required={true}
       />
       <Select
         optionKey={'name'}
@@ -89,8 +94,13 @@ const FormProduct = ({ onClose, categorias }) => {
         title={'Categorias *'}
         name={'category'}
         defaultValue={''}
+        required={true}
       />
-      <TextArea placeholder={'Descripcion del producto'} name={'description'} />
+      <TextArea
+        placeholder={'Descripcion del producto'}
+        name={'description'}
+        required={true}
+      />
       <InputImage setImageProduct={setImageProduct} />
 
       <ButtonSubmit text={'Crear producto'} isLoading={isLoading} />

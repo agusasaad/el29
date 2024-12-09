@@ -7,9 +7,34 @@ import { destacados } from '@/components/featured/data'
 import Link from 'next/link'
 import Whatsapp from '@/assets/icons/Whatsapp'
 import MiniCard from '@/components/cardsComponent/miniCard/MiniCard'
+import { useEffect, useState } from 'react'
+import { supabase } from '@/supabase'
 const Detail = () => {
   const { id } = useParams()
-  const detail = destacados.find((product) => product.id === id)
+
+  const [productos, setProductos] = useState([])
+  const getProductos = async () => {
+    try {
+      let { data: productos, error } = await supabase
+        .from('products')
+        .select('*')
+
+      if (error) {
+        console.error('Error al obtener productos:', error)
+        return null
+      }
+
+      setProductos(productos)
+    } catch (error) {
+      console.error('Error al obtener productos:', error)
+    }
+  }
+
+  useEffect(() => {
+    getProductos()
+  }, [])
+
+  const detail = productos.find((product) => product.id === Number(id))
 
   const carouselSettings = {
     autoPlay: true,
@@ -31,15 +56,16 @@ const Detail = () => {
       <div className={styles.detail_container}>
         <div className={styles.container_carrucel}>
           <Carousel {...carouselSettings} className={styles.carrucel}>
-            {detail?.carrucel?.map((image, index) => (
+            {detail?.images?.map((image, index) => (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 className={styles.img}
                 key={index}
-                src={image.src}
+                src={image}
                 alt={image}
-                width={1000}
-                height={1000}
+                width={400}
+                height={400}
+                loading='lazy'
               ></img>
             ))}
           </Carousel>
@@ -50,11 +76,6 @@ const Detail = () => {
           <h2>{detail?.name}</h2>
           <h3>${detail?.price}</h3>
           <p>{detail?.description}</p>
-          <ul className={styles.productHighlights}>
-            {detail?.productHighlights?.map((highlight, index) => (
-              <li key={index}>{highlight}</li>
-            ))}
-          </ul>
           <div className={styles.buttonWhatsapp}>
             <button>
               <i>
@@ -71,7 +92,7 @@ const Detail = () => {
           <h2>Productos similares</h2>
         </div>
         <div className={styles.similars_container}>
-          {destacados.map((item, index) => (
+          {productos.map((item, index) => (
             <MiniCard key={index} item={item} />
           ))}
         </div>
