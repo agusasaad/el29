@@ -19,6 +19,7 @@ const Dashboard = () => {
   const [categorias, setCategorias] = useState([])
   const [typeTable, setTypeTable] = useState('products')
   const [dataUpdate, setDataUpdate] = useState(null)
+  const [searchText, setSearchText] = useState('') // Estado para el texto de búsqueda
 
   const closeModal = () => {
     setIsModalOpen(false)
@@ -120,18 +121,41 @@ const Dashboard = () => {
     return null
   }
 
+  // Filtrar datos según el texto de búsqueda
+  const filteredData =
+    typeTable === 'products'
+      ? productos.filter((item) =>
+          item.name.toLowerCase().includes(searchText.toLowerCase())
+        )
+      : categorias.filter((item) =>
+          item.name.toLowerCase().includes(searchText.toLowerCase())
+        )
+
   return (
     <div className={styles.container}>
       <h2>Panel de Administración</h2>
+
+      {/* Input de Búsqueda */}
+      <input
+        type='text'
+        placeholder='Buscar por nombre...'
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
+        className={styles.searchInput}
+      />
+
       <div className={styles.content}>
         <ButtonControl handleModal={handleModal} setTypeTable={setTypeTable} />
       </div>
+
+      {/* Tabla filtrada */}
       <Table
-        data={typeTable === 'products' ? productos : categorias}
+        data={filteredData}
         deleteItem={deleteItem}
         typeTable={typeTable}
         handleModal={handleModal}
       />
+
       <Modal isModalOpen={isModalOpen} onClose={closeModal}>
         {type === 'product' ? (
           <FormProduct
