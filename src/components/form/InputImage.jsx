@@ -9,6 +9,7 @@ const ImageCompressor = ({ setImageProduct }) => {
     if (file) {
       new Compressor(file, {
         quality: 0.4,
+        convertSize: 1,
         mimeType: 'image/webp',
         success: (compressedResult) => {
           setImageProduct(compressedResult)

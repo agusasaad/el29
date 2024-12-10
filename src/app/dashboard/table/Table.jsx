@@ -1,7 +1,22 @@
+import { useState } from 'react'
 import Image from 'next/image'
 import styles from './Table.module.css'
+import Modal from '@/components/modal/Modal'
 
-const Table = ({ data }) => {
+const Table = ({ data, deleteItem, typeTable }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalData, setModalData] = useState(null)
+
+  const openModalWithData = (data) => {
+    setModalData(data)
+    setIsModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+    setModalData(null)
+  }
+
   const columns = data.length > 0 ? Object.keys(data[0]) : []
 
   const renderCell = (value, column) => {
@@ -31,15 +46,31 @@ const Table = ({ data }) => {
             {columns.map((col, index) => (
               <th key={index}>{col}</th>
             ))}
+            <th>Opciones</th>
           </tr>
         </thead>
         <tbody>
           {data.length > 0 ? (
             data.map((row, rowIndex) => (
-              <tr key={rowIndex}>
+              <tr key={rowIndex} className={styles.table_row}>
                 {columns.map((col, colIndex) => (
-                  <td key={colIndex}>{renderCell(row[col], col)}</td>
+                  <td key={colIndex} onClick={() => openModalWithData(row)}>
+                    {renderCell(row[col], col)}
+                  </td>
                 ))}
+                <td className={styles.table_options}>
+                  <button>Editar</button>
+                  <button
+                    onClick={() =>
+                      deleteItem(
+                        row.id,
+                        typeTable === 'products' ? 'product' : 'category'
+                      )
+                    }
+                  >
+                    Eliminar
+                  </button>
+                </td>
               </tr>
             ))
           ) : (
@@ -49,6 +80,29 @@ const Table = ({ data }) => {
           )}
         </tbody>
       </table>
+
+      <Modal isModalOpen={isModalOpen} onClose={closeModal}>
+        {modalData && (
+          <div className={styles.modal_content}>
+            <h2>
+              {typeTable === 'products'
+                ? 'Detalles del Producto'
+                : 'Detalles de la Categoría'}
+            </h2>
+            <ul>
+              {Object.entries(modalData).map(([key, value]) => (
+                <li key={key}>
+                  {key !== 'images' && key !== 'id' && (
+                    <p>
+                      <strong>{key}:</strong> {value}
+                    </p>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </Modal>
     </div>
   )
 }

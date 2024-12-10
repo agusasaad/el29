@@ -8,6 +8,7 @@ import FormProduct from './FormProduct'
 import FormCategory from './FormCategory'
 import Table from './table/Table'
 import { supabase } from '@/supabase'
+import Swal from 'sweetalert2'
 
 const Dashboard = () => {
   const [currentUser, setCurrentUser] = useState(null)
@@ -58,6 +59,35 @@ const Dashboard = () => {
     }
   }
 
+  const deleteItem = async (id, type) => {
+    try {
+      const result = await Swal.fire({
+        title: '¿Estás seguro?',
+        text: `¿Seguro que deseas eliminar este item?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+      })
+
+      if (result.isConfirmed) {
+        const table = type === 'product' ? 'products' : 'categories'
+
+        const { data, error } = await supabase.from(table).delete().eq('id', id)
+
+        if (error) {
+          console.error(`Error al eliminar el item:`, error)
+          return
+        }
+        window.location.reload()
+      }
+    } catch (err) {
+      console.error('Error en la operación:', err)
+    }
+  }
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'))
     if (user) {
@@ -88,7 +118,11 @@ const Dashboard = () => {
       <div className={styles.content}>
         <ButtonControl handleModal={handleModal} setTypeTable={setTypeTable} />
       </div>
-      <Table data={typeTable === 'products' ? productos : categorias} />
+      <Table
+        data={typeTable === 'products' ? productos : categorias}
+        deleteItem={deleteItem}
+        typeTable={typeTable}
+      />
       <Modal isModalOpen={isModalOpen} onClose={closeModal}>
         {type === 'product' ? (
           <FormProduct onClose={closeModal} categorias={categorias} />
