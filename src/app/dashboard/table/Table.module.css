@@ -46,10 +46,16 @@
 }
 
 .table_options button {
-  border: 1px solid rgb(168, 168, 168);
   margin-left: 10px;
-  padding: 8px 15px;
-  color: inherit;
+  padding: 8px 18px;
+  color: white;
+  border-radius: 5px;
+}
+.table_options button:nth-child(1) {
+  background-color: #54c585;
+}
+.table_options button:nth-child(2) {
+  background-color: var(--red);
 }
 
 .modal_content {
@@ -94,7 +100,7 @@
 
   .table_options {
     border: 1px solid red;
-    max-width: 130px !important;
+    max-width: 150px !important;
   }
 
   .modal_content {

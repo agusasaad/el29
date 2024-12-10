@@ -2,7 +2,7 @@
 import Compressor from 'compressorjs'
 import styles from './StyleForm.module.css'
 
-const ImageCompressor = ({ setImageProduct }) => {
+const ImageCompressor = ({ setImageProduct, required }) => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0]
 
@@ -28,7 +28,7 @@ const ImageCompressor = ({ setImageProduct }) => {
         accept='image/*'
         onChange={handleImageUpload}
         id='image'
-        required
+        required={required}
       />
     </label>
   )

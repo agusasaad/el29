@@ -6,9 +6,10 @@ import InputImage from '@/components/form/InputImage'
 import Select from '@/components/form/Select'
 import TextArea from '@/components/form/TextArea'
 import { supabase } from '@/supabase'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import Swal from 'sweetalert2'
 
-const FormProduct = ({ onClose, categorias }) => {
+const FormProduct = ({ onClose, categorias, dataUpdate }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [imageProduct, setImageProduct] = useState(null)
 
@@ -17,7 +18,7 @@ const FormProduct = ({ onClose, categorias }) => {
     setIsLoading(true)
 
     try {
-      let image
+      let image = dataUpdate?.images?.[0]
 
       if (imageProduct) {
         const fileName = `${Date.now()}-${imageProduct.name}`
@@ -37,28 +38,50 @@ const FormProduct = ({ onClose, categorias }) => {
           throw new Error(`Error al obtener la URL pública: ${error.message}`)
 
         image = data.publicUrl
-      } else {
-        alert('Selecciona una imagen')
-        setIsLoading(false)
-        return
       }
 
       const formData = Object.fromEntries(new FormData(e.target))
       formData.images = [image]
 
-      const { data, error } = await supabase.from('products').insert([formData])
+      if (dataUpdate) {
+        // Actualización de producto
+        const { error } = await supabase
+          .from('products')
+          .update(formData)
+          .eq('id', dataUpdate.id)
 
-      if (error)
-        throw new Error(`Error al insertar los datos: ${error.message}`)
+        if (error)
+          throw new Error(`Error al actualizar el producto: ${error.message}`)
 
-      alert('Producto creado con éxito')
+        Swal.fire({
+          icon: 'success',
+          title: '¡Éxito!',
+          text: 'Producto actualizado con éxito',
+        })
+      } else {
+        // Creación de producto
+        const { error } = await supabase.from('products').insert([formData])
+
+        if (error)
+          throw new Error(`Error al insertar los datos: ${error.message}`)
+
+        Swal.fire({
+          icon: 'success',
+          title: '¡Éxito!',
+          text: 'Producto creado con éxito',
+        })
+      }
 
       onClose()
-
       window.location.reload()
     } catch (error) {
       console.error(error.message)
-      alert(`Hubo un error: ${error.message}`)
+
+      Swal.fire({
+        icon: 'error',
+        title: '¡Error!',
+        text: `Hubo un error: ${error.message}`,
+      })
     } finally {
       setIsLoading(false)
     }
@@ -67,43 +90,53 @@ const FormProduct = ({ onClose, categorias }) => {
   return (
     <Form onSubmit={onSubmit}>
       <Input
-        name={'name'}
-        type={'text'}
-        title={'Nombre *'}
-        placeholder={'Nombre del producto'}
-        required={true}
+        name='name'
+        type='text'
+        title='Nombre *'
+        placeholder='Nombre del producto'
+        required
+        defaultValue={dataUpdate?.name}
       />
       <Input
-        name={'price'}
-        type={'number'}
-        title={'Precio *'}
-        placeholder={`Precio del producto sin . ni  ,`}
-        required={true}
+        name='price'
+        type='number'
+        title='Precio *'
+        placeholder='Precio del producto sin . ni ,'
+        required
+        defaultValue={dataUpdate?.price}
       />
       <Input
-        name={'stock'}
-        type={'number'}
-        title={'Stock *'}
-        placeholder={'Stock del producto'}
-        required={true}
+        name='stock'
+        type='number'
+        title='Stock *'
+        placeholder='Stock del producto'
+        required
+        defaultValue={dataUpdate?.stock}
       />
       <Select
-        optionKey={'name'}
+        optionKey='name'
         options={categorias}
-        data={'name'}
-        title={'Categorias *'}
-        name={'category'}
-        defaultValue={''}
-        required={true}
+        data='name'
+        title='Categorias *'
+        name='category'
+        defaultValue={dataUpdate?.category}
+        required
       />
       <TextArea
-        placeholder={'Descripcion del producto'}
-        name={'description'}
-        required={true}
+        placeholder='Descripcion del producto'
+        name='description'
+        required
+        defaultValue={dataUpdate?.description}
       />
-      <InputImage setImageProduct={setImageProduct} />
+      <InputImage
+        setImageProduct={setImageProduct}
+        required={dataUpdate?.images?.[0] ? false : true}
+      />
 
-      <ButtonSubmit text={'Crear producto'} isLoading={isLoading} />
+      <ButtonSubmit
+        text={dataUpdate ? 'Actualizar producto' : 'Crear producto'}
+        isLoading={isLoading}
+      />
     </Form>
   )
 }

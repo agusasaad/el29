@@ -55,7 +55,7 @@ const NavBar = () => {
             </button>
           </div>
           <Link href={'/'} className={styles.logo}>
-            <Image src={logo} alt='logo' width={200} height={200} />
+            <Image src={logo} alt='logo' width={200} height={200} priority />
           </Link>
 
           {!currentUser ? (

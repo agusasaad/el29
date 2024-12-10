@@ -12,6 +12,7 @@ const Select = ({
   data,
   required = false,
 }) => {
+  console.log(defaultValue)
   return (
     <label htmlFor={id} className={styles.label}>
       {title}

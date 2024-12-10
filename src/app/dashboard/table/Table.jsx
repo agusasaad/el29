@@ -3,7 +3,7 @@ import Image from 'next/image'
 import styles from './Table.module.css'
 import Modal from '@/components/modal/Modal'
 
-const Table = ({ data, deleteItem, typeTable }) => {
+const Table = ({ data, deleteItem, typeTable, handleModal }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalData, setModalData] = useState(null)
 
@@ -59,7 +59,16 @@ const Table = ({ data, deleteItem, typeTable }) => {
                   </td>
                 ))}
                 <td className={styles.table_options}>
-                  <button>Editar</button>
+                  <button
+                    onClick={() =>
+                      handleModal(
+                        typeTable === 'products' ? 'product' : 'category',
+                        row
+                      )
+                    }
+                  >
+                    Editar
+                  </button>
                   <button
                     onClick={() =>
                       deleteItem(

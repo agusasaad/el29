@@ -18,11 +18,19 @@ const Dashboard = () => {
   const [productos, setProductos] = useState([])
   const [categorias, setCategorias] = useState([])
   const [typeTable, setTypeTable] = useState('products')
+  const [dataUpdate, setDataUpdate] = useState(null)
 
-  const closeModal = () => setIsModalOpen(false)
-  const handleModal = (type) => {
+  const closeModal = () => {
+    setIsModalOpen(false)
+    setDataUpdate(null)
+  }
+
+  const handleModal = (type, row) => {
     setType(type)
     setIsModalOpen(true)
+    if (row) {
+      setDataUpdate(row)
+    }
   }
 
   const getProductos = async () => {
@@ -122,12 +130,17 @@ const Dashboard = () => {
         data={typeTable === 'products' ? productos : categorias}
         deleteItem={deleteItem}
         typeTable={typeTable}
+        handleModal={handleModal}
       />
       <Modal isModalOpen={isModalOpen} onClose={closeModal}>
         {type === 'product' ? (
-          <FormProduct onClose={closeModal} categorias={categorias} />
+          <FormProduct
+            onClose={closeModal}
+            categorias={categorias}
+            dataUpdate={dataUpdate}
+          />
         ) : (
-          <FormCategory onClose={closeModal} />
+          <FormCategory onClose={closeModal} dataUpdate={dataUpdate} />
         )}
       </Modal>
     </div>
