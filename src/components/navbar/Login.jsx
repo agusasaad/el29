@@ -26,9 +26,9 @@ const Login = ({ onClose }) => {
         localStorage.setItem('user', JSON.stringify(result.data.user))
         localStorage.setItem('session', JSON.stringify(result.data.session))
 
-        e.target.reset()
         onClose()
-        window.location.reload()
+        router.push('/dashboard')
+        // window.location.reload()
       } else {
         console.error(result.error.message)
         alert('Correo o contraseña incorrectos.')
@@ -60,9 +60,6 @@ const Login = ({ onClose }) => {
         type={'submit'}
         isLoading={isLoading}
       />
-      <div className={styles.forgetPassword}>
-        <button>¿Olvidaste tu contraseña?</button>
-      </div>
     </Form>
   )
 }

@@ -2,7 +2,7 @@
 import Compressor from 'compressorjs'
 import styles from './StyleForm.module.css'
 
-const ImageCompressor = ({ setImageProduct, required }) => {
+const ImageCompressor = ({ setImageProduct, required, setIsPictureReady }) => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0]
 
@@ -13,6 +13,7 @@ const ImageCompressor = ({ setImageProduct, required }) => {
         mimeType: 'image/webp',
         success: (compressedResult) => {
           setImageProduct(compressedResult)
+          setIsPictureReady(true)
         },
         error: (err) => {
           console.error('Error al comprimir la imagen:', err)

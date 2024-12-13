@@ -16,6 +16,7 @@
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "react-responsive-carousel": "^3.2.23",
+    "sharp": "^0.33.5",
     "sweetalert2": "^11.14.5"
   },
   "devDependencies": {

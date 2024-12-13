@@ -20,11 +20,7 @@ const Table = ({ data, deleteItem, typeTable, handleModal }) => {
   const columns = data.length > 0 ? Object.keys(data[0]) : []
 
   const renderCell = (value, column) => {
-    if (
-      column === 'images' &&
-      Array.isArray(value) &&
-      value[0]?.endsWith('.webp')
-    ) {
+    if (column === 'images' && Array.isArray(value)) {
       return (
         <Image
           src={value[0]}

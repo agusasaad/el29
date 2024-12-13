@@ -101,12 +101,15 @@
 .user {
   position: relative;
   cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
 }
 
 .user .logOut {
   position: absolute;
-  top: 40px;
-  right: 0;
+  top: 50px;
+  left: 0px;
   width: 150px;
   color: black;
   cursor: pointer;
@@ -119,7 +122,7 @@
   opacity: 0;
 }
 
-.user:hover .logOut {
+.user .logOut.active {
   visibility: visible;
   opacity: 1;
 }
@@ -129,6 +132,39 @@
   color: black;
   width: 100%;
   padding: 10px 0px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.1);
+}
+
+.shoppingCard {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shoppingCard {
+  display: flex;
+  align-items: center;
+}
+
+.shoppingCard i {
+  display: flex;
+  align-items: center;
+}
+
+.shoppingCard .quantity {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: white;
+  color: black;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
 }
 
 /* List Nav */
@@ -239,20 +275,27 @@
     font-size: 10px;
   }
 
-  .hamburguer,
-  .contact {
+  .hamburguer {
     width: min-content;
     justify-content: center;
   }
 
   .hamburguer span,
-  .contact span,
   .login span {
+    display: none;
+  }
+
+  .contact {
     display: none;
   }
 
   .logo img {
     width: 190px;
+  }
+
+  .user .logOut {
+    top: 40px;
+    left: -50px;
   }
 }
 

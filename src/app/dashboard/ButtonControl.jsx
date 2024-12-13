@@ -2,7 +2,12 @@ import { useState, useEffect } from 'react'
 import Plus from '@/assets/icons/Plus'
 import styles from './page.module.css'
 
-const ButtonControl = ({ handleModal, setTypeTable }) => {
+const ButtonControl = ({
+  handleModal,
+  setTypeTable,
+  searchText,
+  setSearchText,
+}) => {
   const [selectedButton, setSelectedButton] = useState('products') // Establece 'products' como valor inicial
 
   useEffect(() => {
@@ -44,6 +49,13 @@ const ButtonControl = ({ handleModal, setTypeTable }) => {
           </i>
           <span>Crear categoria</span>
         </button>
+        <input
+          type='text'
+          placeholder='Buscar por nombre...'
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          className={styles.searchInput}
+        />
       </div>
     </div>
   )

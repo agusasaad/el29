@@ -1,3 +1,4 @@
+import Spinner from './Spinner'
 import styles from './StyleForm.module.css'
 
 const ButtonSubmit = ({
@@ -21,7 +22,7 @@ const ButtonSubmit = ({
       onClick={onClick}
       disabled={disabled}
     >
-      {isLoading ? <span className={styles.loader}></span> : text}
+      {isLoading ? <Spinner color={'#fff'} /> : text}
     </button>
   )
 }

@@ -12,79 +12,78 @@ import Swal from 'sweetalert2'
 const FormProduct = ({ onClose, categorias, dataUpdate }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [imageProduct, setImageProduct] = useState(null)
+  const [isPictureReady, setIsPictureReady] = useState(false)
 
   const onSubmit = async (e) => {
     e.preventDefault()
     setIsLoading(true)
+    console.log(imageProduct)
+    // try {
+    //   let image = dataUpdate?.images?.[0]
 
-    try {
-      let image = dataUpdate?.images?.[0]
+    //   if (imageProduct) {
+    //     const fileName = `${Date.now()}-${imageProduct.name}`
 
-      if (imageProduct) {
-        const fileName = `${Date.now()}-${imageProduct.name}`
+    //     const { data: uploadData, error: uploadError } = await supabase.storage
+    //       .from('images')
+    //       .upload(fileName, imageProduct)
 
-        const { data: uploadData, error: uploadError } = await supabase.storage
-          .from('images')
-          .upload(fileName, imageProduct)
+    //     if (uploadError)
+    //       throw new Error(`Error al subir la imagen: ${uploadError.message}`)
 
-        if (uploadError)
-          throw new Error(`Error al subir la imagen: ${uploadError.message}`)
+    //     const { data, error } = supabase.storage
+    //       .from('images')
+    //       .getPublicUrl(uploadData.path)
 
-        const { data, error } = supabase.storage
-          .from('images')
-          .getPublicUrl(uploadData.path)
+    //     if (error)
+    //       throw new Error(`Error al obtener la URL pública: ${error.message}`)
 
-        if (error)
-          throw new Error(`Error al obtener la URL pública: ${error.message}`)
+    //     image = data.publicUrl
+    //   }
 
-        image = data.publicUrl
-      }
+    //   const formData = Object.fromEntries(new FormData(e.target))
+    //   formData.images = [image]
 
-      const formData = Object.fromEntries(new FormData(e.target))
-      formData.images = [image]
+    //   if (dataUpdate?.id) {
+    //     const { error } = await supabase
+    //       .from('products')
+    //       .update(formData)
+    //       .eq('id', dataUpdate.id)
 
-      if (dataUpdate) {
-        // Actualización de producto
-        const { error } = await supabase
-          .from('products')
-          .update(formData)
-          .eq('id', dataUpdate.id)
+    //     if (error)
+    //       throw new Error(`Error al actualizar el producto: ${error.message}`)
 
-        if (error)
-          throw new Error(`Error al actualizar el producto: ${error.message}`)
+    //     Swal.fire({
+    //       icon: 'success',
+    //       title: '¡Éxito!',
+    //       text: 'Producto actualizado con éxito',
+    //     })
+    //   } else {
+    //     const { error } = await supabase.from('products').insert([formData])
 
-        Swal.fire({
-          icon: 'success',
-          title: '¡Éxito!',
-          text: 'Producto actualizado con éxito',
-        })
-      } else {
-        // Creación de producto
-        const { error } = await supabase.from('products').insert([formData])
+    //     if (error)
+    //       throw new Error(`Error al insertar los datos: ${error.message}`)
 
-        if (error)
-          throw new Error(`Error al insertar los datos: ${error.message}`)
+    //     Swal.fire({
+    //       icon: 'success',
+    //       title: '¡Éxito!',
+    //       text: 'Producto creado con éxito',
+    //     })
+    //   }
 
-        Swal.fire({
-          icon: 'success',
-          title: '¡Éxito!',
-          text: 'Producto creado con éxito',
-        })
-      }
+    //   onClose()
+    //   window.location.reload()
+    // } catch (error) {
+    //   console.error(error.message)
 
-      onClose()
-      window.location.reload()
-    } catch (error) {
-      console.error(error.message)
-
-      Swal.fire({
-        icon: 'error',
-        title: '¡Error!',
-        text: `Hubo un error: ${error.message}`,
-      })
-    } finally {
-      setIsLoading(false)
-    }
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: '¡Error!',
+    //     text: `Hubo un error: ${error.message}`,
+    //   })
+    // } finally {
+    //   setIsLoading(false)
+    // }
   }
 
   return (
@@ -131,11 +130,13 @@ const FormProduct = ({ onClose, categorias, dataUpdate }) => {
       <InputImage
         setImageProduct={setImageProduct}
         required={dataUpdate?.images?.[0] ? false : true}
+        setIsPictureReady={setIsPictureReady}
       />
 
       <ButtonSubmit
         text={dataUpdate ? 'Actualizar producto' : 'Crear producto'}
         isLoading={isLoading}
+        disabled={dataUpdate?.id ? false : !isPictureReady}
       />
     </Form>
   )

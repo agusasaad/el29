@@ -6,34 +6,46 @@ import logo from '@/assets/images/logo.png'
 import Contact from '@/assets/icons/Contact'
 import Link from 'next/link'
 import ListNav from './ListNav'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import User from '@/assets/icons/User'
 import Modal from '../modal/Modal'
 import Login from './Login'
 import { supabase } from '@/supabase'
+import ShoppingCard from '@/assets/icons/ShoppingCard'
+import UserLogin from '@/assets/icons/UserLogin'
+import { useAppContext } from '@/context/AppContext'
 
 const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false)
+  const [showLogout, setShowLogout] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [currentUser, setCurrentUser] = useState(null)
+
+  const { cart } = useAppContext()
 
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
 
-  useEffect(() => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const validateUser = () => {
     const user = JSON.parse(localStorage.getItem('user'))
-    if (user) setCurrentUser(user)
-  }, [])
+    if (user && !currentUser) setCurrentUser(user)
+  }
+
+  useEffect(() => {
+    validateUser()
+  }, [currentUser, validateUser])
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut()
-    localStorage.clear()
-    window.location.reload()
-
     if (error) {
       console.error('Error al cerrar sesión:', error.message)
       return
     }
+
+    localStorage.removeItem('session')
+    localStorage.removeItem('user')
+    window.location.reload()
   }
 
   return (
@@ -76,23 +88,38 @@ const NavBar = () => {
                 </i>
                 <span>CONTACTO</span>
               </Link>
+              <Link href={'/cart'} className={styles.shoppingCard}>
+                <i>
+                  <ShoppingCard color='white' width='33px' height='33px' />
+                </i>
+                <span className={styles.quantity}>{cart.length}</span>
+              </Link>
             </div>
           ) : (
             <div className={styles.user}>
               <button
                 className={styles.login}
                 aria-label='User'
-                style={{ pointerEvents: 'none' }}
+                onClick={() => setShowLogout(!showLogout)}
               >
                 <i>
-                  <User color='white' width='33px' height='33px' />
+                  <UserLogin color='white' width='33px' height='33px' />
                 </i>
                 <span>{currentUser?.email}</span>
               </button>
-
-              <div className={styles.logOut}>
+              <div
+                className={`${styles.logOut} ${
+                  showLogout ? styles.active : ''
+                }`}
+              >
                 <button onClick={handleLogout}>Cerra sesión</button>
               </div>
+              <Link href={'/cart'} className={styles.shoppingCard}>
+                <i>
+                  <ShoppingCard color='white' width='33px' height='33px' />
+                </i>
+                <span className={styles.quantity}>{cart.length}</span>
+              </Link>
             </div>
           )}
         </div>
