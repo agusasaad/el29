@@ -27,11 +27,9 @@ const Carrucel = () => {
             key={index}
             src={image}
             alt={image}
-            width={1000}
-            height={1000}
-            quality={75}
+            width={2000}
+            height={2000}
             priority
-            placeholder='blur'
           ></Image>
         ))}
       </Carousel>
