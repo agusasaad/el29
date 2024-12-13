@@ -3,6 +3,7 @@ import Carrucel from '@/components/carrucel/Carrucel'
 import Medios_de_pago from '@/components/medios_de_pago/Medios_de_pago'
 import Featured from '@/components/featured/Featured'
 import Banner from '@/components/banner/Banner'
+import Footer from '@/components/footer/Footer'
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
         />
         <Banner />
         <Featured text={'Productos recomendados'} />
+        <Footer />
       </main>
     </div>
   )
