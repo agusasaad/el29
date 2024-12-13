@@ -9,8 +9,11 @@ import Tire from '@/assets/icons/Tire'
 import Close from '@/assets/icons/Close'
 import Dashboard from '@/assets/icons/Dashboard'
 import Inicio from '@/assets/icons/Inicio'
+import { useAppContext } from '@/context/AppContext'
+import Arrow from '@/assets/icons/Arrow'
 
 const ListNav = ({ setShowMenu, showMenu, currentUser }) => {
+  const { categories } = useAppContext()
   return (
     <div className={`${styles.list} ${showMenu ? styles.show : ''}`}>
       <div className={styles.title}>
@@ -48,46 +51,16 @@ const ListNav = ({ setShowMenu, showMenu, currentUser }) => {
       <div className={styles.categorias}>
         <h3>Categorias</h3>
         <ul>
-          <li>
-            <Link href='/' onClick={() => setShowMenu(false)}>
-              <i>
-                <Oil width='30px' height='30px' color='var(--red)' />
-              </i>
-              <span>Aceites para Motor</span>
-            </Link>
-          </li>
-          <li>
-            <Link href='/' onClick={() => setShowMenu(false)}>
-              <i>
-                <Filter width='27px' height='27px' color='var(--red)' />
-              </i>
-              <span>Filtros</span>
-            </Link>
-          </li>
-          <li>
-            <Link href='/' onClick={() => setShowMenu(false)}>
-              <i>
-                <OutCar width='30px' height='30px' color='var(--red)' />
-              </i>
-              <span>Accesorios Exteriores</span>
-            </Link>
-          </li>
-          <li>
-            <Link href='/' onClick={() => setShowMenu(false)}>
-              <i>
-                <InCar width='30px' height='30px' color='var(--red)' />
-              </i>
-              <span>Accesorios Interiores</span>
-            </Link>
-          </li>
-          <li>
-            <Link href='/' onClick={() => setShowMenu(false)}>
-              <i>
-                <Tire width='30px' height='30px' color='var(--red)' />
-              </i>
-              <span>Neumáticos y Ruedas</span>
-            </Link>
-          </li>
+          {categories.map((item, index) => (
+            <li key={index}>
+              <Link href='/' onClick={() => setShowMenu(false)}>
+                <i>
+                  <Arrow width='30px' height='30px' />
+                </i>
+                <span>{item.name}</span>
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
     </div>

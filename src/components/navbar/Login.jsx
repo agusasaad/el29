@@ -3,7 +3,6 @@ import { useState } from 'react'
 import Form from '../form/Form'
 import Input from '../form/Input'
 import ButtonSubmit from '../form/ButtonSubmit'
-import styles from './NavBar.module.css'
 import { supabase } from '@/supabase'
 import { useRouter } from 'next/navigation'
 
@@ -28,7 +27,6 @@ const Login = ({ onClose }) => {
 
         onClose()
         router.push('/dashboard')
-        // window.location.reload()
       } else {
         console.error(result.error.message)
         alert('Correo o contraseña incorrectos.')

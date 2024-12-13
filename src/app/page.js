@@ -2,6 +2,7 @@ import styles from './page.module.css'
 import Carrucel from '@/components/carrucel/Carrucel'
 import Medios_de_pago from '@/components/medios_de_pago/Medios_de_pago'
 import Featured from '@/components/featured/Featured'
+import Banner from '@/components/banner/Banner'
 
 export default function Home() {
   return (
@@ -9,7 +10,11 @@ export default function Home() {
       <main className={styles.main}>
         <Carrucel />
         <Medios_de_pago />
-        <Featured />
+        <Featured
+          text={'¡Comprá nuestros productos destacados y recibilos hoy mismo!'}
+        />
+        <Banner />
+        <Featured text={'Productos recomendados'} />
       </main>
     </div>
   )

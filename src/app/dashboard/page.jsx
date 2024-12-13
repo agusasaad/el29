@@ -1,7 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
 import styles from './page.module.css'
-import Plus from '@/assets/icons/Plus'
 import ButtonControl from './ButtonControl'
 import Modal from '@/components/modal/Modal'
 import FormProduct from './FormProduct'
@@ -9,14 +8,15 @@ import FormCategory from './FormCategory'
 import Table from './table/Table'
 import { supabase } from '@/supabase'
 import Swal from 'sweetalert2'
+import { useAppContext } from '@/context/AppContext'
 
 const Dashboard = () => {
+  const { products, categories } = useAppContext()
+
   const [currentUser, setCurrentUser] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [type, setType] = useState(false)
-  const [productos, setProductos] = useState([])
-  const [categorias, setCategorias] = useState([])
   const [typeTable, setTypeTable] = useState('products')
   const [dataUpdate, setDataUpdate] = useState(null)
   const [searchText, setSearchText] = useState('')
@@ -31,40 +31,6 @@ const Dashboard = () => {
     setIsModalOpen(true)
     if (row) {
       setDataUpdate(row)
-    }
-  }
-
-  const getProductos = async () => {
-    try {
-      let { data: productos, error } = await supabase
-        .from('products')
-        .select('*')
-
-      if (error) {
-        console.error('Error al obtener productos:', error)
-        return null
-      }
-
-      setProductos(productos)
-    } catch (error) {
-      console.error('Error al obtener productos:', error)
-    }
-  }
-
-  const getCategories = async () => {
-    try {
-      let { data: categories, error } = await supabase
-        .from('categories')
-        .select('*')
-
-      if (error) {
-        console.error('Error al obtener categorías:', error)
-        return null
-      }
-
-      setCategorias(categories)
-    } catch (error) {
-      console.error('Error al obtener categorías:', error)
     }
   }
 
@@ -103,9 +69,6 @@ const Dashboard = () => {
       setCurrentUser(user)
     }
     setIsLoading(false)
-
-    getProductos()
-    getCategories()
   }, [])
 
   if (isLoading) {
@@ -123,10 +86,10 @@ const Dashboard = () => {
 
   const filteredData =
     typeTable === 'products'
-      ? productos.filter((item) =>
+      ? products.filter((item) =>
           item.name.toLowerCase().includes(searchText.toLowerCase())
         )
-      : categorias.filter((item) =>
+      : categories.filter((item) =>
           item.name.toLowerCase().includes(searchText.toLowerCase())
         )
 
@@ -153,7 +116,7 @@ const Dashboard = () => {
         {type === 'product' ? (
           <FormProduct
             onClose={closeModal}
-            categorias={categorias}
+            categorias={categories}
             dataUpdate={dataUpdate}
           />
         ) : (

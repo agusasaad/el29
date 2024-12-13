@@ -2,7 +2,7 @@
 import Compressor from 'compressorjs'
 import styles from './StyleForm.module.css'
 
-const ImageCompressor = ({ setImageProduct, required, setIsPictureReady }) => {
+const InputImage = ({ setImageProduct, required, setIsPictureReady }) => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0]
 
@@ -35,4 +35,4 @@ const ImageCompressor = ({ setImageProduct, required, setIsPictureReady }) => {
   )
 }
 
-export default ImageCompressor
+export default InputImage

@@ -6,34 +6,12 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import Link from 'next/link'
 import Whatsapp from '@/assets/icons/Whatsapp'
 import MiniCard from '@/components/cardsComponent/miniCard/MiniCard'
-import { useEffect, useState } from 'react'
-import { supabase } from '@/supabase'
+import { useAppContext } from '@/context/AppContext'
 const Detail = () => {
   const { id } = useParams()
+  const { products } = useAppContext()
 
-  const [productos, setProductos] = useState([])
-  const getProductos = async () => {
-    try {
-      let { data: productos, error } = await supabase
-        .from('products')
-        .select('*')
-
-      if (error) {
-        console.error('Error al obtener productos:', error)
-        return null
-      }
-
-      setProductos(productos)
-    } catch (error) {
-      console.error('Error al obtener productos:', error)
-    }
-  }
-
-  useEffect(() => {
-    getProductos()
-  }, [])
-
-  const detail = productos.find((product) => product.id === Number(id))
+  const detail = products.find((product) => product.id === Number(id))
 
   const carouselSettings = {
     autoPlay: true,
@@ -91,7 +69,7 @@ const Detail = () => {
           <h2>Productos similares</h2>
         </div>
         <div className={styles.similars_container}>
-          {productos.map((item, index) => (
+          {products.map((item, index) => (
             <MiniCard key={index} item={item} />
           ))}
         </div>
