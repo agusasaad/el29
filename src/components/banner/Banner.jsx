@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styles from './Banner.module.css'
 
 const Banner = () => {
@@ -6,7 +7,7 @@ const Banner = () => {
       <div className={styles.content}>
         <div className={styles.text}>
           <p>¡Encuentra lo que necesitas!</p>
-          <button>Ver productos</button>
+          <Link href={'/productos'}>Ver productos</Link>
         </div>
       </div>
     </div>

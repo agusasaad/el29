@@ -18,10 +18,10 @@ const Footer = () => {
             <h5>Navegación</h5>
             <ul>
               <li>
-                <Link href={'/'}>Productos</Link>
+                <Link href={'/productos'}>Productos</Link>
               </li>
               <li>
-                <Link href={'/'}>Carrito</Link>
+                <Link href={'/cart'}>Carrito</Link>
               </li>
             </ul>
           </div>

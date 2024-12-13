@@ -36,7 +36,7 @@
   max-width: 600px;
 }
 
-.text button {
+.text a {
   background: var(--foreground);
   padding: 13px 30px;
   color: inherit;

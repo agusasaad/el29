@@ -14,7 +14,7 @@ const Cart = () => {
         {cart.length === 0 ? (
           <div className={styles.content_empty}>
             <i>
-              <CartEmpty width={'150px'} height={'auto'} />
+              <CartEmpty width={'180px'} height={'auto'} />
             </i>
             <div className={styles.text}>
               <span>

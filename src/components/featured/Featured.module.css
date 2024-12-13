@@ -32,7 +32,7 @@
   padding-bottom: 10px;
 }
 
-.button_container button {
+.button_container a {
   color: var(--red);
 }
 

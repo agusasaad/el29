@@ -2,6 +2,7 @@
 import styles from './Featured.module.css'
 import Card from '../cardsComponent/card/Card'
 import { useAppContext } from '@/context/AppContext'
+import Link from 'next/link'
 
 const Featured = ({ text, data }) => {
   const { products } = useAppContext()
@@ -13,7 +14,7 @@ const Featured = ({ text, data }) => {
 
       <div className={styles.products_container}>
         <div className={styles.button_container}>
-          <button>Ver todos los productos</button>
+          <Link href={'/productos'}>Ver todos los productos</Link>
         </div>
         <div className={styles.cards}>
           {products.map((item, index) => (
