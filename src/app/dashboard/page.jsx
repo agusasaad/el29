@@ -10,6 +10,7 @@ import { supabase } from '@/supabase'
 import Swal from 'sweetalert2'
 import { useAppContext } from '@/context/AppContext'
 import PaginationProduct from '@/components/pagination/PaginationProduct'
+import PaginationCategorie from '@/components/pagination/PaginationCategorie'
 
 const Dashboard = () => {
   const { products, categories } = useAppContext()
@@ -113,7 +114,11 @@ const Dashboard = () => {
         handleModal={handleModal}
       />
 
-      <PaginationProduct />
+      {typeTable === 'products' ? (
+        <PaginationProduct />
+      ) : (
+        <PaginationCategorie />
+      )}
 
       <Modal isModalOpen={isModalOpen} onClose={closeModal}>
         {type === 'product' ? (

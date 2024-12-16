@@ -11,6 +11,8 @@ export const AppProvider = ({ children }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 6
   const [totalProducts, setTotalProducts] = useState(0)
+  const [currentCategoryPage, setCurrentCategoryPage] = useState(1)
+  const [totalCategories, setTotalCategories] = useState(0)
 
   const getProductos = async (page = 1, limit = itemsPerPage) => {
     try {
@@ -38,6 +40,32 @@ export const AppProvider = ({ children }) => {
     }
   }
 
+  const getCategories = async (page = 1, limit = itemsPerPage) => {
+    try {
+      const from = (page - 1) * limit
+      const to = from + limit - 1
+
+      let {
+        data: categories,
+        count,
+        error,
+      } = await supabase
+        .from('categories')
+        .select('*', { count: 'exact' })
+        .range(from, to)
+
+      if (error) {
+        console.error('Error al obtener categorías:', error)
+        return null
+      }
+
+      setCategories(categories)
+      setTotalCategories(count)
+    } catch (error) {
+      console.error('Error al obtener categorías:', error)
+    }
+  }
+
   const nextPage = () => {
     if (currentPage * itemsPerPage < totalProducts) {
       setCurrentPage((prev) => prev + 1)
@@ -48,22 +76,16 @@ export const AppProvider = ({ children }) => {
     setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev))
   }
 
-  const getCategories = async () => {
-    try {
-      let { data: categories, error } = await supabase
-        .from('categories')
-        .select('*')
-
-      if (error) {
-        console.error('Error al obtener categorías:', error)
-        return null
-      }
-
-      setCategories(categories)
-    } catch (error) {
-      console.error('Error al obtener categorías:', error)
+  const nextCategoryPage = () => {
+    if (currentCategoryPage * itemsPerPage < totalCategories) {
+      setCurrentCategoryPage((prev) => prev + 1)
     }
   }
+
+  const prevCategoryPage = () => {
+    setCurrentCategoryPage((prev) => (prev > 1 ? prev - 1 : prev))
+  }
+
   const addToCart = (item) => {
     setCart((prevCart) => {
       const existingItemIndex = prevCart.findIndex(
@@ -97,7 +119,10 @@ export const AppProvider = ({ children }) => {
   }, [currentPage])
 
   useEffect(() => {
-    getCategories()
+    getCategories(currentCategoryPage)
+  }, [currentCategoryPage])
+
+  useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem('cart')) || []
     setCart(storedCart)
   }, [])
@@ -123,6 +148,10 @@ export const AppProvider = ({ children }) => {
         prevPage,
         totalProducts,
         itemsPerPage,
+        currentCategoryPage,
+        nextCategoryPage,
+        prevCategoryPage,
+        totalCategories,
       }}
     >
       {children}

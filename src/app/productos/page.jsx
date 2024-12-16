@@ -8,30 +8,43 @@ import Link from 'next/link'
 import Close from '@/assets/icons/Close'
 
 const Productos = () => {
-  const { categories, products } = useAppContext()
+  const { categories, products, cart, addToCart, removeFromCart } =
+    useAppContext()
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [showMenu, setShowMenu] = useState(false)
-  const [searchTerm, setSearchTerm] = useState('') // Estado para el filtro por nombre
+  const [searchTerm, setSearchTerm] = useState('')
 
-  // Filtra los productos por categoría y nombre
+  // Filtrar productos por categoría y nombre
   const filteredProducts = products.filter((product) => {
     const isCategoryMatch = selectedCategory
       ? product.category === selectedCategory
       : true
     const isSearchMatch = product.name
       .toLowerCase()
-      .includes(searchTerm.toLowerCase()) // Filtra por nombre
+      .includes(searchTerm.toLowerCase())
     return isCategoryMatch && isSearchMatch
   })
+
+  const isInCart = (productId) =>
+    cart.some((cartItem) => cartItem.id === productId)
+
+  const toggleCartItem = (item) => {
+    if (isInCart(item.id)) {
+      removeFromCart(item.id)
+    } else {
+      addToCart(item)
+    }
+  }
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
+        {/* Botón para mostrar categorías */}
         <button
           className={styles.categorias_button}
           onClick={() => setShowMenu(!showMenu)}
         >
-          Ver Categorias
+          Ver Categorías
         </button>
         <div
           className={`${styles.button_control} ${showMenu ? styles.show : ''}`}
@@ -73,6 +86,7 @@ const Productos = () => {
           </div>
         </div>
 
+        {/* Tarjetas de productos */}
         <div className={styles.container_cards}>
           <div className={styles.cards}>
             {filteredProducts.map((item, index) => (
@@ -93,7 +107,18 @@ const Productos = () => {
                   <p>{item.description}</p>
                   <span>${item.price}</span>
                   <div className={styles.button}>
-                    <button>Agregar al carrito</button>
+                    <button
+                      onClick={() => toggleCartItem(item)}
+                      style={
+                        isInCart(item.id)
+                          ? { color: 'var(--red)' }
+                          : { color: 'green' }
+                      }
+                    >
+                      {isInCart(item.id)
+                        ? 'Eliminar del carrito'
+                        : 'Agregar al carrito'}
+                    </button>
                     <Link href={`/detail/${item.id}`}>
                       <button>Ver detalles</button>
                     </Link>
