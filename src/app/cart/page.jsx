@@ -8,6 +8,23 @@ import CartEmpty from '@/assets/icons/CartEmpty'
 
 const Cart = () => {
   const { cart, removeFromCart } = useAppContext()
+
+  const generateWhatsAppLink = () => {
+    const baseUrl = 'https://wa.me/5491128067218'
+    let message = '*¡Pedido del carrito!*%0A%0A'
+
+    cart.forEach((item, index) => {
+      message += `${index + 1}. *Producto:* ${item.name}%0A *Precio:* $${
+        item.price
+      }%0A%0A`
+    })
+
+    const total = cart.reduce((acc, item) => acc + item.price, 0)
+    message += `*Total:* $${total}`
+
+    return `${baseUrl}?text=${message}`
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -21,8 +38,9 @@ const Cart = () => {
                 ¡Aún no hay productos en tu carrito! Comienza a agregar tus
                 favoritos ahora.
               </span>
-
-              <button>Ver productos</button>
+              <Link href={'/productos'}>
+                <button>Ver productos</button>
+              </Link>
             </div>
           </div>
         ) : (
@@ -71,12 +89,17 @@ const Cart = () => {
                   </span>
                 </div>
                 <div className={styles.buttonWhatsapp}>
-                  <button>
+                  <Link
+                    href={generateWhatsAppLink()}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className={styles.link}
+                  >
                     <i>
                       <Whatsapp width='30px' height='30px' />
                     </i>
                     <span>Hacer mi pedido</span>
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

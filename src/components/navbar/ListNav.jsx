@@ -11,6 +11,8 @@ import Dashboard from '@/assets/icons/Dashboard'
 import Inicio from '@/assets/icons/Inicio'
 import { useAppContext } from '@/context/AppContext'
 import Arrow from '@/assets/icons/Arrow'
+import Cart from '@/app/cart/page'
+import ShoppingCard from '@/assets/icons/ShoppingCard'
 
 const ListNav = ({ setShowMenu, showMenu, currentUser }) => {
   const { categories } = useAppContext()
@@ -45,22 +47,23 @@ const ListNav = ({ setShowMenu, showMenu, currentUser }) => {
               </Link>
             </li>
           )}
-        </ul>
-      </div>
 
-      <div className={styles.categorias}>
-        <h3>Categorias</h3>
-        <ul>
-          {categories.map((item, index) => (
-            <li key={index}>
-              <Link href='/' onClick={() => setShowMenu(false)}>
-                <i>
-                  <Arrow width='30px' height='30px' />
-                </i>
-                <span>{item.name}</span>
-              </Link>
-            </li>
-          ))}
+          <li>
+            <Link href='/productos' onClick={() => setShowMenu(false)}>
+              <i>
+                <OutCar width='30px' height='30px' color='var(--red)' />
+              </i>
+              <span>Productos</span>
+            </Link>
+          </li>
+          <li>
+            <Link href='/cart' onClick={() => setShowMenu(false)}>
+              <i>
+                <ShoppingCard width='30px' height='30px' color='var(--red)' />
+              </i>
+              <span>Mis Productos</span>
+            </Link>
+          </li>
         </ul>
       </div>
     </div>

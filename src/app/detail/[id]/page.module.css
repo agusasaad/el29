@@ -94,26 +94,32 @@
 
 .buttonWhatsapp {
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
 
-.buttonWhatsapp button {
+.buttonWhatsapp button,
+.buttonWhatsapp .whatsappButton {
   margin-top: 10px;
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 10px;
-  padding: 10px 25px 10px 20px;
+  padding: 10px 20px;
   border: 1px solid rgb(179, 179, 179);
   border-radius: 5px;
 }
 
-.buttonWhatsapp button i {
+.buttonWhatsapp button i,
+.buttonWhatsapp .whatsappButton i {
   display: flex;
   align-items: center;
 }
 
-.buttonWhatsapp button span {
-  font-size: 16px;
+.buttonWhatsapp button span,
+.buttonWhatsapp .whatsappButton span {
+  font-size: 14px;
   color: black;
 }
 
@@ -227,5 +233,12 @@
   .title h2 {
     font-size: 16px;
     text-align: center;
+  }
+}
+
+@media (max-width: 500px) {
+  .info .buttonWhatsapp {
+    flex-direction: column;
+    gap: 0px;
   }
 }

@@ -7,11 +7,22 @@ import Link from 'next/link'
 import Whatsapp from '@/assets/icons/Whatsapp'
 import MiniCard from '@/components/cardsComponent/miniCard/MiniCard'
 import { useAppContext } from '@/context/AppContext'
+import ShoppingCard from '@/assets/icons/ShoppingCard'
 const Detail = () => {
   const { id } = useParams()
-  const { products } = useAppContext()
+  const productId = Number(id)
+  const { getAllProducts, cart, addToCart, removeFromCart } = useAppContext()
 
-  const detail = products.find((product) => product.id === Number(id))
+  const detail = getAllProducts?.find((product) => product.id === productId)
+  const isInCart = cart.some((cartItem) => cartItem.id === productId)
+
+  const handleToggleCart = () => {
+    if (isInCart) {
+      removeFromCart(productId)
+    } else {
+      addToCart(detail)
+    }
+  }
 
   const carouselSettings = {
     autoPlay: true,
@@ -54,11 +65,45 @@ const Detail = () => {
           <h3>${detail?.price}</h3>
           <p>{detail?.description}</p>
           <div className={styles.buttonWhatsapp}>
-            <button>
+            <Link
+              href={{
+                pathname: 'https://wa.me/5491128067218',
+                query: {
+                  text: `
+        *¡Pedido de producto!*
+        *Producto:* ${detail?.name}
+        *Categoría:* ${detail?.category}
+        *Precio:* $${detail?.price}
+        
+        ${detail?.description ? `*Descripción:* ${detail?.description}` : ''}
+
+        ¡Estoy interesado en este producto! ¿Está disponible?`,
+                },
+              }}
+              target='_blank'
+              rel='noopener noreferrer'
+              className={styles.whatsappButton}
+            >
               <i>
-                <Whatsapp width='35px' height='35px' />
+                <Whatsapp width='25px' height='25px' />
               </i>
               <span>Hacer mi pedido</span>
+            </Link>
+            <button onClick={handleToggleCart}>
+              {isInCart ? (
+                ''
+              ) : (
+                <i>
+                  <ShoppingCard width='25px' height='25px' color='var(--red)' />
+                </i>
+              )}
+              {isInCart ? (
+                <span style={{ color: 'var(--red)' }}>
+                  Eliminar del carrito
+                </span>
+              ) : (
+                <span>Agregar al carrito</span>
+              )}
             </button>
           </div>
         </div>
@@ -69,7 +114,7 @@ const Detail = () => {
           <h2>Productos similares</h2>
         </div>
         <div className={styles.similars_container}>
-          {products.map((item, index) => (
+          {getAllProducts?.map((item, index) => (
             <MiniCard key={index} item={item} />
           ))}
         </div>

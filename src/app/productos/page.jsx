@@ -8,8 +8,14 @@ import Link from 'next/link'
 import Close from '@/assets/icons/Close'
 
 const Productos = () => {
-  const { categories, products, cart, addToCart, removeFromCart } =
-    useAppContext()
+  const {
+    categories,
+    getAllCategorias,
+    products,
+    cart,
+    addToCart,
+    removeFromCart,
+  } = useAppContext()
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [showMenu, setShowMenu] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
@@ -72,7 +78,7 @@ const Productos = () => {
             >
               Todas las categorías
             </button>
-            {categories.map((item) => (
+            {getAllCategorias?.map((item) => (
               <button
                 key={item.id}
                 onClick={() => {

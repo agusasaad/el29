@@ -176,10 +176,11 @@
 .buttonWhatsapp {
   display: flex;
   align-items: center;
+
   justify-content: center;
 }
 
-.buttonWhatsapp button {
+.buttonWhatsapp .link {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -190,12 +191,12 @@
   border-radius: 5px;
 }
 
-.buttonWhatsapp button i {
+.buttonWhatsapp .link i {
   display: flex;
   align-items: center;
 }
 
-.buttonWhatsapp button span {
+.buttonWhatsapp .link span {
   font-size: 14px;
   font-weight: 500;
   color: black;

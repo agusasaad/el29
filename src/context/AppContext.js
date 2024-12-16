@@ -6,13 +6,32 @@ const AppContext = createContext()
 
 export const AppProvider = ({ children }) => {
   const [products, setProducts] = useState([])
+  const [getAllProducts, setgetAllProducts] = useState()
   const [categories, setCategories] = useState([])
+  const [getAllCategorias, setGetAllCategorias] = useState()
   const [cart, setCart] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 6
   const [totalProducts, setTotalProducts] = useState(0)
   const [currentCategoryPage, setCurrentCategoryPage] = useState(1)
   const [totalCategories, setTotalCategories] = useState(0)
+
+  const todosLosProductos = async () => {
+    try {
+      let { data: allProducts, error } = await supabase
+        .from('products')
+        .select('*')
+
+      if (error) {
+        console.error('Error al obtener productos:', error)
+        return null
+      }
+
+      setgetAllProducts(allProducts)
+    } catch (error) {
+      console.error('Error al obtener productos:', error)
+    }
+  }
 
   const getProductos = async (page = 1, limit = itemsPerPage) => {
     try {
@@ -63,6 +82,23 @@ export const AppProvider = ({ children }) => {
       setTotalCategories(count)
     } catch (error) {
       console.error('Error al obtener categorías:', error)
+    }
+  }
+
+  const todasLasCategorias = async () => {
+    try {
+      let { data: allCategorias, error } = await supabase
+        .from('categories')
+        .select('*')
+
+      if (error) {
+        console.error('Error al obtener productos:', error)
+        return null
+      }
+
+      setGetAllCategorias(allCategorias)
+    } catch (error) {
+      console.error('Error al obtener productos:', error)
     }
   }
 
@@ -123,6 +159,8 @@ export const AppProvider = ({ children }) => {
   }, [currentCategoryPage])
 
   useEffect(() => {
+    todosLosProductos()
+    todasLasCategorias()
     const storedCart = JSON.parse(localStorage.getItem('cart')) || []
     setCart(storedCart)
   }, [])
@@ -134,12 +172,13 @@ export const AppProvider = ({ children }) => {
       localStorage.removeItem('cart')
     }
   }, [cart])
-
   return (
     <AppContext.Provider
       value={{
         products,
+        getAllProducts,
         categories,
+        getAllCategorias,
         cart,
         addToCart,
         removeFromCart,

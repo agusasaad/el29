@@ -13,7 +13,7 @@ import PaginationProduct from '@/components/pagination/PaginationProduct'
 import PaginationCategorie from '@/components/pagination/PaginationCategorie'
 
 const Dashboard = () => {
-  const { products, categories } = useAppContext()
+  const { products, categories, getAllCategorias } = useAppContext()
 
   const [currentUser, setCurrentUser] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -124,7 +124,7 @@ const Dashboard = () => {
         {type === 'product' ? (
           <FormProduct
             onClose={closeModal}
-            categorias={categories}
+            categorias={getAllCategorias}
             dataUpdate={dataUpdate}
           />
         ) : (

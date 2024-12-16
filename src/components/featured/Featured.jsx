@@ -8,7 +8,7 @@ import ArrowRight from '@/assets/icons/ArrowRight'
 import { useRef } from 'react'
 
 const Featured = ({ text, data }) => {
-  const { products } = useAppContext()
+  const { getAllProducts } = useAppContext()
   const carrucelRef = useRef(null)
   const handleleftClick = () => {
     carrucelRef.current.scrollLeft -= 355
@@ -36,7 +36,7 @@ const Featured = ({ text, data }) => {
               <ArrowLeft width='20px' height='20px' color='#515151' />
             </i>
           </button>
-          {products.map((item, index) => (
+          {getAllProducts?.map((item, index) => (
             <Card key={index} item={item} />
           ))}
           <button
