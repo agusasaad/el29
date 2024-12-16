@@ -8,12 +8,23 @@ export const AppProvider = ({ children }) => {
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [cart, setCart] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 6
+  const [totalProducts, setTotalProducts] = useState(0)
 
-  const getProductos = async () => {
+  const getProductos = async (page = 1, limit = itemsPerPage) => {
     try {
-      let { data: productos, error } = await supabase
+      const from = (page - 1) * limit
+      const to = from + limit - 1
+
+      let {
+        data: productos,
+        count,
+        error,
+      } = await supabase
         .from('products')
-        .select('*')
+        .select('*', { count: 'exact' })
+        .range(from, to)
 
       if (error) {
         console.error('Error al obtener productos:', error)
@@ -21,9 +32,20 @@ export const AppProvider = ({ children }) => {
       }
 
       setProducts(productos)
+      setTotalProducts(count)
     } catch (error) {
       console.error('Error al obtener productos:', error)
     }
+  }
+
+  const nextPage = () => {
+    if (currentPage * itemsPerPage < totalProducts) {
+      setCurrentPage((prev) => prev + 1)
+    }
+  }
+
+  const prevPage = () => {
+    setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev))
   }
 
   const getCategories = async () => {
@@ -71,7 +93,10 @@ export const AppProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    getProductos()
+    getProductos(currentPage)
+  }, [currentPage])
+
+  useEffect(() => {
     getCategories()
     const storedCart = JSON.parse(localStorage.getItem('cart')) || []
     setCart(storedCart)
@@ -87,7 +112,18 @@ export const AppProvider = ({ children }) => {
 
   return (
     <AppContext.Provider
-      value={{ products, categories, cart, addToCart, removeFromCart }}
+      value={{
+        products,
+        categories,
+        cart,
+        addToCart,
+        removeFromCart,
+        currentPage,
+        nextPage,
+        prevPage,
+        totalProducts,
+        itemsPerPage,
+      }}
     >
       {children}
     </AppContext.Provider>
