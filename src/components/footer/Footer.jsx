@@ -39,7 +39,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href={'/'}>
+                <Link href='https://wa.me/+5491128067218' target='_blank'>
                   <Whastapp width='20px' height='20px' />
                 </Link>
               </li>
@@ -49,13 +49,20 @@ const Footer = () => {
         <section className={styles.section_2}>
           <ul>
             <li>
-              <Link href={'/'}>0123456789</Link>
+              <Link href='https://wa.me/+5491128067218' target='_blank'>
+                +54 9 11 2806-7218
+              </Link>
             </li>
             <li>
               <Link href={'/'}>el29j@example.com</Link>
             </li>
             <li>
-              <Link href={'/'}>Buenos Aires, Argentina</Link>
+              <Link
+                href='https://www.google.com/maps?q=Buenos+Aires,+Argentina'
+                target='_blank'
+              >
+                Buenos Aires, Argentina
+              </Link>
             </li>
           </ul>
         </section>

@@ -1,35 +1,51 @@
 'use client'
 import { useAppContext } from '@/context/AppContext'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './page.module.css'
-import PaginationProduct from '@/components/pagination/PaginationProduct'
 import Image from 'next/image'
 import Link from 'next/link'
 import Close from '@/assets/icons/Close'
+import { supabase } from '@/supabase'
 
 const Productos = () => {
-  const {
-    categories,
-    getAllCategorias,
-    products,
-    cart,
-    addToCart,
-    removeFromCart,
-  } = useAppContext()
+  const { getAllCategorias, cart, addToCart, removeFromCart } = useAppContext()
+  const [products, setProducts] = useState([])
   const [selectedCategory, setSelectedCategory] = useState(null)
-  const [showMenu, setShowMenu] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
+  const [showMenu, setShowMenu] = useState(false)
 
-  // Filtrar productos por categoría y nombre
-  const filteredProducts = products.filter((product) => {
-    const isCategoryMatch = selectedCategory
-      ? product.category === selectedCategory
-      : true
-    const isSearchMatch = product.name
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
-    return isCategoryMatch && isSearchMatch
-  })
+  const [currentPage, setCurrentPage] = useState(1)
+  const productsPerPage = 5
+  const [totalProducts, setTotalProducts] = useState(0)
+
+  const fetchProducts = async () => {
+    const start = (currentPage - 1) * productsPerPage
+    const end = start + productsPerPage - 1
+
+    let query = supabase.from('products').select('*', { count: 'exact' })
+
+    if (selectedCategory) {
+      query = query.eq('category', selectedCategory)
+    }
+
+    if (searchTerm) {
+      query = query.ilike('name', `%${searchTerm}%`)
+    }
+
+    query = query.range(start, end)
+
+    const { data, count, error } = await query
+    if (error) {
+      console.error('Error fetching products:', error)
+    } else {
+      setProducts(data)
+      setTotalProducts(count || 0)
+    }
+  }
+
+  useEffect(() => {
+    fetchProducts()
+  }, [selectedCategory, searchTerm, currentPage])
 
   const isInCart = (productId) =>
     cart.some((cartItem) => cartItem.id === productId)
@@ -41,6 +57,8 @@ const Productos = () => {
       addToCart(item)
     }
   }
+
+  const totalPages = Math.ceil(totalProducts / productsPerPage)
 
   return (
     <div className={styles.container}>
@@ -65,7 +83,10 @@ const Productos = () => {
               type='text'
               placeholder='Buscar por nombre'
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                setSearchTerm(e.target.value)
+                setCurrentPage(1)
+              }}
             />
           </div>
           <h2>Categorías</h2>
@@ -83,6 +104,7 @@ const Productos = () => {
                 key={item.id}
                 onClick={() => {
                   setSelectedCategory(item.name)
+                  setCurrentPage(1)
                   setShowMenu(false)
                 }}
               >
@@ -95,7 +117,7 @@ const Productos = () => {
         {/* Tarjetas de productos */}
         <div className={styles.container_cards}>
           <div className={styles.cards}>
-            {filteredProducts.map((item, index) => (
+            {products.map((item, index) => (
               <div key={index} className={styles.card_item}>
                 <Link
                   href={`/detail/${item.id}`}
@@ -133,7 +155,25 @@ const Productos = () => {
               </div>
             ))}
           </div>
-          <PaginationProduct />
+
+          {/* Paginación */}
+          <div className={styles.pagination}>
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(currentPage - 1)}
+            >
+              Anterior
+            </button>
+            <span>
+              Página {currentPage} de {totalPages}
+            </span>
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(currentPage + 1)}
+            >
+              Siguiente
+            </button>
+          </div>
         </div>
       </div>
     </div>
