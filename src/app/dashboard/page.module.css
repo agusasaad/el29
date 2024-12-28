@@ -64,7 +64,9 @@
 .button_control .button_products {
   display: flex;
   align-items: center;
-  gap: 30px;
+  column-gap: 30px;
+  row-gap: 10px;
+  flex-wrap: wrap;
 }
 
 .button_control .button_products button {

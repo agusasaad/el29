@@ -74,27 +74,33 @@ const Table = ({ data, deleteItem, typeTable, handleModal }) => {
                           ? 'product'
                           : typeTable === 'categories'
                           ? 'category'
-                          : 'banner',
+                          : typeTable === 'banner'
+                          ? 'banner'
+                          : typeTable === 'telefono'
+                          ? 'telefono'
+                          : '',
                         row
                       )
                     }
                   >
                     Editar
                   </button>
-                  <button
-                    onClick={() =>
-                      deleteItem(
-                        row.id,
-                        typeTable === 'products'
-                          ? 'product'
-                          : typeTable === 'categories'
-                          ? 'category'
-                          : 'banner'
-                      )
-                    }
-                  >
-                    Eliminar
-                  </button>
+                  {typeTable !== 'telefono' && (
+                    <button
+                      onClick={() =>
+                        deleteItem(
+                          row.id,
+                          typeTable === 'products'
+                            ? 'product'
+                            : typeTable === 'categories'
+                            ? 'category'
+                            : 'banner'
+                        )
+                      }
+                    >
+                      Eliminar
+                    </button>
+                  )}
                 </td>
               </tr>
             ))

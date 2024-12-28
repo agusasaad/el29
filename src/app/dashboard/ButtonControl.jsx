@@ -40,6 +40,12 @@ const ButtonControl = ({
         >
           Banners
         </button>
+        <button
+          onClick={() => handleButtonClick('telefono')}
+          className={selectedButton === 'telefono' ? styles.selected : ''}
+        >
+          Telefono
+        </button>
       </div>
       <div className={styles.button_create}>
         <button onClick={() => handleModal('product')}>

@@ -12,8 +12,7 @@ const Cart = () => {
 
   const generateWhatsAppLink = () => {
     if (!phoneNumber) return ''
-
-    const baseUrl = `https://wa.me/${phoneNumber}`
+    const baseUrl = `https://wa.me/${phoneNumber[0].phone_number}`
     let message = '*¡Pedido del carrito!*%0A%0A'
 
     cart.forEach((item, index) => {

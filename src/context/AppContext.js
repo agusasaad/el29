@@ -29,7 +29,7 @@ export const AppProvider = ({ children }) => {
         return null
       }
 
-      setPhoneNumber(phone_numbers[0].phone_number)
+      setPhoneNumber(phone_numbers)
     } catch (error) {
       console.error('Error al obtener numero:', error)
     }
@@ -234,6 +234,7 @@ export const AppProvider = ({ children }) => {
         getCategories,
         getProductos,
         phoneNumber,
+        numberPhone,
       }}
     >
       {children}

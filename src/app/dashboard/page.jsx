@@ -12,6 +12,7 @@ import { useAppContext } from '@/context/AppContext'
 import PaginationProduct from '@/components/pagination/PaginationProduct'
 import PaginationCategorie from '@/components/pagination/PaginationCategorie'
 import FormBanner from './FormBanner'
+import FormNumber from './FormNumber'
 
 const Dashboard = () => {
   const {
@@ -22,8 +23,8 @@ const Dashboard = () => {
     todosLosBanners,
     getCategories,
     getProductos,
+    phoneNumber,
   } = useAppContext()
-
   const [currentUser, setCurrentUser] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -42,6 +43,7 @@ const Dashboard = () => {
     setIsModalOpen(true)
     if (row) {
       setDataUpdate(row)
+      console.log(dataUpdate)
     }
   }
 
@@ -116,9 +118,13 @@ const Dashboard = () => {
       ? categories.filter((item) =>
           item.name.toLowerCase().includes(searchText.toLowerCase())
         )
-      : banner.filter((item) =>
+      : typeTable === 'banner'
+      ? banner.filter((item) =>
           item.name.toLowerCase().includes(searchText.toLowerCase())
         )
+      : typeTable === 'telefono'
+      ? phoneNumber.filter((item) => item.phone_number.includes(searchText))
+      : []
 
   return (
     <div className={styles.container}>
@@ -156,6 +162,8 @@ const Dashboard = () => {
           <FormCategory onClose={closeModal} dataUpdate={dataUpdate} />
         ) : type === 'banner' ? (
           <FormBanner onClose={closeModal} dataUpdate={dataUpdate} />
+        ) : type === 'telefono' ? (
+          <FormNumber onClose={closeModal} dataUpdate={dataUpdate} />
         ) : null}
       </Modal>
     </div>
