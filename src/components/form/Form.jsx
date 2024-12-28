@@ -1,7 +1,7 @@
 'use client'
 import styles from './StyleForm.module.css'
 
-const Form = ({ onSubmit, children }) => {
+const Form = ({ onSubmit, children, maxWidth }) => {
   if (!onSubmit) {
     onSubmit = function (e) {
       e.preventDefault()
@@ -11,7 +11,11 @@ const Form = ({ onSubmit, children }) => {
     }
   }
   return (
-    <form className={styles.form} onSubmit={onSubmit}>
+    <form
+      className={styles.form}
+      onSubmit={onSubmit}
+      style={{ maxWidth: maxWidth }}
+    >
       {children}
     </form>
   )

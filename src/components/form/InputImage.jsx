@@ -1,8 +1,17 @@
 'use client'
 import Compressor from 'compressorjs'
 import styles from './StyleForm.module.css'
+import AddImage from '@/assets/icons/AddImage'
+import Image from 'next/image'
 
-const InputImage = ({ setImageProduct, required, setIsPictureReady }) => {
+const InputImage = ({
+  setImageProduct,
+  required,
+  setIsPictureReady,
+  imageProduct,
+  showImage = false,
+  defaultValue = null,
+}) => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0]
 
@@ -24,6 +33,23 @@ const InputImage = ({ setImageProduct, required, setIsPictureReady }) => {
 
   return (
     <label className={styles.inputImage}>
+      {showImage && (
+        <div className={styles.image}>
+          {imageProduct || defaultValue ? (
+            <Image
+              src={
+                imageProduct ? URL.createObjectURL(imageProduct) : defaultValue
+              }
+              alt='banner'
+              width={250}
+              height={250}
+              quality={20}
+            />
+          ) : (
+            <AddImage />
+          )}
+        </div>
+      )}
       <input
         type='file'
         accept='image/*'

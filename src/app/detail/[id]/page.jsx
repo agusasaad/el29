@@ -65,30 +65,6 @@ const Detail = () => {
           <h3>${detail?.price}</h3>
           <p>{detail?.description}</p>
           <div className={styles.buttonWhatsapp}>
-            <Link
-              href={{
-                pathname: 'https://wa.me/5491128067218',
-                query: {
-                  text: `
-        *¡Pedido de producto!*
-        *Producto:* ${detail?.name}
-        *Categoría:* ${detail?.category}
-        *Precio:* $${detail?.price}
-        
-        ${detail?.description ? `*Descripción:* ${detail?.description}` : ''}
-
-        ¡Estoy interesado en este producto! ¿Está disponible?`,
-                },
-              }}
-              target='_blank'
-              rel='noopener noreferrer'
-              className={styles.whatsappButton}
-            >
-              <i>
-                <Whatsapp width='25px' height='25px' />
-              </i>
-              <span>Hacer mi pedido</span>
-            </Link>
             <button onClick={handleToggleCart}>
               {isInCart ? (
                 ''

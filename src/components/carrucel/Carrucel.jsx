@@ -3,12 +3,11 @@ import Image from 'next/image'
 import styles from './Carrucel.module.css'
 import { Carousel } from 'react-responsive-carousel'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
-import one from '@/assets/images/carrucel/image_1.jpg'
-import two from '@/assets/images/carrucel/image_2.jpg'
-import three from '@/assets/images/carrucel/image_3.jpg'
+import { useAppContext } from '@/context/AppContext'
+import sinBanner from '@/assets/images/sinBanner.svg'
 
 const Carrucel = () => {
-  const images = [one, two, three]
+  const { banner } = useAppContext()
 
   const carouselSettings = {
     autoPlay: true,
@@ -19,19 +18,26 @@ const Carrucel = () => {
     showIndicators: true,
     interval: 4000,
   }
+
   return (
     <section className={styles.container}>
       <Carousel {...carouselSettings} className={styles.carousel}>
-        {images?.map((image, index) => (
-          <Image
-            key={index}
-            src={image}
-            alt={image}
-            width={2000}
-            height={2000}
-            priority
-          ></Image>
-        ))}
+        {banner?.length > 0 ? (
+          banner.map((image, index) => (
+            <Image
+              key={index}
+              src={image.image_url}
+              alt={image.name}
+              width={2000}
+              height={2000}
+              priority
+            />
+          ))
+        ) : (
+          <div className={styles.container_spinner}>
+            <span className={styles.loader}></span>
+          </div>
+        )}
       </Carousel>
     </section>
   )

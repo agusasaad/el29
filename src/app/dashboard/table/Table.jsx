@@ -20,16 +20,28 @@ const Table = ({ data, deleteItem, typeTable, handleModal }) => {
   const columns = data.length > 0 ? Object.keys(data[0]) : []
 
   const renderCell = (value, column) => {
-    if (column === 'images' && Array.isArray(value)) {
-      return (
-        <Image
-          src={value[0]}
-          alt='Product Image'
-          width={50}
-          height={50}
-          style={{ objectFit: 'contain' }}
-        />
-      )
+    if (column === 'images' || column === 'image_url') {
+      if (Array.isArray(value)) {
+        return (
+          <Image
+            src={value[0]}
+            alt='Image'
+            width={50}
+            height={50}
+            style={{ objectFit: 'contain' }}
+          />
+        )
+      } else if (typeof value === 'string') {
+        return (
+          <Image
+            src={value}
+            alt='Image'
+            width={50}
+            height={50}
+            style={{ objectFit: 'contain' }}
+          />
+        )
+      }
     }
     return value
   }
@@ -58,7 +70,11 @@ const Table = ({ data, deleteItem, typeTable, handleModal }) => {
                   <button
                     onClick={() =>
                       handleModal(
-                        typeTable === 'products' ? 'product' : 'category',
+                        typeTable === 'products'
+                          ? 'product'
+                          : typeTable === 'categories'
+                          ? 'category'
+                          : 'banner',
                         row
                       )
                     }
@@ -69,7 +85,11 @@ const Table = ({ data, deleteItem, typeTable, handleModal }) => {
                     onClick={() =>
                       deleteItem(
                         row.id,
-                        typeTable === 'products' ? 'product' : 'category'
+                        typeTable === 'products'
+                          ? 'product'
+                          : typeTable === 'categories'
+                          ? 'category'
+                          : 'banner'
                       )
                     }
                   >
@@ -80,7 +100,7 @@ const Table = ({ data, deleteItem, typeTable, handleModal }) => {
             ))
           ) : (
             <tr>
-              <td colSpan={columns.length}>No hay productos disponibles</td>
+              <td colSpan={columns.length}>No hay datos disponibles</td>
             </tr>
           )}
         </tbody>
@@ -92,7 +112,9 @@ const Table = ({ data, deleteItem, typeTable, handleModal }) => {
             <h2>
               {typeTable === 'products'
                 ? 'Detalles del Producto'
-                : 'Detalles de la Categoría'}
+                : typeTable === 'categories'
+                ? 'Detalles de la Categoría'
+                : 'Detalles del Banner'}
             </h2>
             <ul>
               {Object.entries(modalData).map(([key, value]) => (

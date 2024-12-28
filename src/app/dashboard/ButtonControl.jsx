@@ -8,15 +8,15 @@ const ButtonControl = ({
   searchText,
   setSearchText,
 }) => {
-  const [selectedButton, setSelectedButton] = useState('products') // Establece 'products' como valor inicial
+  const [selectedButton, setSelectedButton] = useState('products')
 
   useEffect(() => {
-    setTypeTable('products') // Al cargar el componente, selecciona 'products' por defecto
+    setTypeTable('products')
   }, [setTypeTable])
 
   const handleButtonClick = (type) => {
-    setSelectedButton(type) // Actualiza el botón seleccionado
-    setTypeTable(type) // Cambia el tipo de tabla
+    setSelectedButton(type)
+    setTypeTable(type)
   }
 
   return (
@@ -34,6 +34,12 @@ const ButtonControl = ({
         >
           Categorias
         </button>
+        <button
+          onClick={() => handleButtonClick('banner')}
+          className={selectedButton === 'banner' ? styles.selected : ''}
+        >
+          Banners
+        </button>
       </div>
       <div className={styles.button_create}>
         <button onClick={() => handleModal('product')}>
@@ -48,6 +54,12 @@ const ButtonControl = ({
             <Plus color='var(--red)' />
           </i>
           <span>Crear categoria</span>
+        </button>
+        <button onClick={() => handleModal('banner')}>
+          <i>
+            <Plus color='var(--red)' />
+          </i>
+          <span>Cargar banner</span>
         </button>
         <input
           type='text'

@@ -3,25 +3,23 @@ import ButtonSubmit from '@/components/form/ButtonSubmit'
 import Form from '@/components/form/Form'
 import Input from '@/components/form/Input'
 import InputImage from '@/components/form/InputImage'
-import Select from '@/components/form/Select'
-import TextArea from '@/components/form/TextArea'
-import { useAppContext } from '@/context/AppContext'
-import { supabase } from '@/supabase'
 import { useState } from 'react'
+import { supabase } from '@/supabase'
 import Swal from 'sweetalert2'
+import { useAppContext } from '@/context/AppContext'
 
-const FormProduct = ({ onClose, categorias, dataUpdate }) => {
+const FormBanner = ({ onClose, dataUpdate }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [imageProduct, setImageProduct] = useState(null)
   const [isPictureReady, setIsPictureReady] = useState(false)
-
-  const { getProductos } = useAppContext()
+  const { todosLosBanners } = useAppContext()
 
   const onSubmit = async (e) => {
     e.preventDefault()
     setIsLoading(true)
+
     try {
-      let image = dataUpdate?.images?.[0]
+      let image = dataUpdate?.image_url
 
       if (imageProduct) {
         const fileName = `${Date.now()}-${imageProduct.name}`
@@ -44,37 +42,39 @@ const FormProduct = ({ onClose, categorias, dataUpdate }) => {
       }
 
       const formData = Object.fromEntries(new FormData(e.target))
-      formData.images = [image]
+      formData.image_url = image
 
       if (dataUpdate?.id) {
+        // Actualización del banner
         const { error } = await supabase
-          .from('products')
+          .from('banner')
           .update(formData)
           .eq('id', dataUpdate.id)
 
         if (error)
-          throw new Error(`Error al actualizar el producto: ${error.message}`)
+          throw new Error(`Error al actualizar el banner: ${error.message}`)
 
         Swal.fire({
           icon: 'success',
           title: '¡Éxito!',
-          text: 'Producto actualizado con éxito',
+          text: 'Banner actualizado con éxito',
         })
       } else {
-        const { error } = await supabase.from('products').insert([formData])
+        // Creación de un nuevo banner
+        const { error } = await supabase.from('banner').insert([formData])
 
         if (error)
-          throw new Error(`Error al insertar los datos: ${error.message}`)
+          throw new Error(`Error al insertar el banner: ${error.message}`)
 
         Swal.fire({
           icon: 'success',
           title: '¡Éxito!',
-          text: 'Producto creado con éxito',
+          text: 'Banner creado con éxito',
         })
       }
 
-      onClose()
-      getProductos()
+      onClose?.()
+      todosLosBanners()
     } catch (error) {
       console.error(error.message)
 
@@ -91,52 +91,27 @@ const FormProduct = ({ onClose, categorias, dataUpdate }) => {
   return (
     <Form onSubmit={onSubmit}>
       <Input
-        name='name'
-        type='text'
-        title='Nombre *'
-        placeholder='Nombre del producto'
-        required
+        title={'Nombre del banner'}
+        type={'text'}
+        placeholder={'Nombre'}
+        name={'name'}
+        id={'name'}
+        required={true}
         defaultValue={dataUpdate?.name}
       />
-      <Input
-        name='price'
-        type='number'
-        title='Precio *'
-        placeholder='Precio del producto sin . ni ,'
-        required
-        defaultValue={dataUpdate?.price}
-      />
-      <Input
-        name='stock'
-        type='number'
-        title='Stock *'
-        placeholder='Stock del producto'
-        required
-        defaultValue={dataUpdate?.stock}
-      />
-      <Select
-        optionKey='name'
-        options={categorias}
-        data='name'
-        title='Categorias *'
-        name='category'
-        defaultValue={dataUpdate?.category}
-        required
-      />
-      <TextArea
-        placeholder='Descripcion del producto'
-        name='description'
-        required
-        defaultValue={dataUpdate?.description}
-      />
+
       <InputImage
+        name={'image_url'}
+        required={dataUpdate?.image_url ? false : true}
+        imageProduct={imageProduct}
         setImageProduct={setImageProduct}
-        required={dataUpdate?.images?.[0] ? false : true}
         setIsPictureReady={setIsPictureReady}
+        showImage={true}
+        defaultValue={dataUpdate?.image_url}
       />
 
       <ButtonSubmit
-        text={dataUpdate ? 'Actualizar producto' : 'Crear producto'}
+        text={dataUpdate ? 'Actualizar banner' : 'Crear banner'}
         isLoading={isLoading}
         disabled={dataUpdate?.id ? false : !isPictureReady}
       />
@@ -144,4 +119,4 @@ const FormProduct = ({ onClose, categorias, dataUpdate }) => {
   )
 }
 
-export default FormProduct
+export default FormBanner

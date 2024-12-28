@@ -6,9 +6,12 @@ import React, { useState } from 'react'
 import ButtonSubmit from '@/components/form/ButtonSubmit'
 import { supabase } from '@/supabase'
 import Swal from 'sweetalert2'
+import { useAppContext } from '@/context/AppContext'
 
 const FormCategory = ({ onClose, dataUpdate }) => {
   const [isLoading, setIsLoading] = useState(false)
+
+  const { getCategories } = useAppContext()
 
   const onSubmit = async (e) => {
     e.preventDefault()
@@ -44,7 +47,7 @@ const FormCategory = ({ onClose, dataUpdate }) => {
       }
 
       onClose()
-      window.location.reload()
+      getCategories()
     } catch (error) {
       console.error(error.message)
       Swal.fire({

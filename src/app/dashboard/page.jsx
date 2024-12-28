@@ -11,9 +11,18 @@ import Swal from 'sweetalert2'
 import { useAppContext } from '@/context/AppContext'
 import PaginationProduct from '@/components/pagination/PaginationProduct'
 import PaginationCategorie from '@/components/pagination/PaginationCategorie'
+import FormBanner from './FormBanner'
 
 const Dashboard = () => {
-  const { products, categories, getAllCategorias } = useAppContext()
+  const {
+    products,
+    categories,
+    banner,
+    getAllCategorias,
+    todosLosBanners,
+    getCategories,
+    getProductos,
+  } = useAppContext()
 
   const [currentUser, setCurrentUser] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -50,7 +59,12 @@ const Dashboard = () => {
       })
 
       if (result.isConfirmed) {
-        const table = type === 'product' ? 'products' : 'categories'
+        const table =
+          type === 'product'
+            ? 'products'
+            : type === 'category'
+            ? 'categories'
+            : 'banner'
 
         const { data, error } = await supabase.from(table).delete().eq('id', id)
 
@@ -58,7 +72,14 @@ const Dashboard = () => {
           console.error(`Error al eliminar el item:`, error)
           return
         }
-        window.location.reload()
+
+        if (type === 'product') {
+          getProductos()
+        } else if (type === 'category') {
+          getCategories()
+        } else if (type === 'banner') {
+          todosLosBanners()
+        }
       }
     } catch (err) {
       console.error('Error en la operación:', err)
@@ -91,7 +112,11 @@ const Dashboard = () => {
       ? products.filter((item) =>
           item.name.toLowerCase().includes(searchText.toLowerCase())
         )
-      : categories.filter((item) =>
+      : typeTable === 'categories'
+      ? categories.filter((item) =>
+          item.name.toLowerCase().includes(searchText.toLowerCase())
+        )
+      : banner.filter((item) =>
           item.name.toLowerCase().includes(searchText.toLowerCase())
         )
 
@@ -127,9 +152,11 @@ const Dashboard = () => {
             categorias={getAllCategorias}
             dataUpdate={dataUpdate}
           />
-        ) : (
+        ) : type === 'category' ? (
           <FormCategory onClose={closeModal} dataUpdate={dataUpdate} />
-        )}
+        ) : type === 'banner' ? (
+          <FormBanner onClose={closeModal} dataUpdate={dataUpdate} />
+        ) : null}
       </Modal>
     </div>
   )

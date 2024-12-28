@@ -5,12 +5,15 @@ import Image from 'next/image'
 import Whatsapp from '@/assets/icons/Whatsapp'
 import Link from 'next/link'
 import CartEmpty from '@/assets/icons/CartEmpty'
+import { useEffect } from 'react'
 
 const Cart = () => {
-  const { cart, removeFromCart } = useAppContext()
+  const { cart, removeFromCart, phoneNumber } = useAppContext()
 
   const generateWhatsAppLink = () => {
-    const baseUrl = 'https://wa.me/5491128067218'
+    if (!phoneNumber) return ''
+
+    const baseUrl = `https://wa.me/${phoneNumber}`
     let message = '*¡Pedido del carrito!*%0A%0A'
 
     cart.forEach((item, index) => {

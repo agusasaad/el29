@@ -6,15 +6,34 @@ const AppContext = createContext()
 
 export const AppProvider = ({ children }) => {
   const [products, setProducts] = useState([])
-  const [getAllProducts, setgetAllProducts] = useState()
+  const [getAllProducts, setgetAllProducts] = useState(null)
   const [categories, setCategories] = useState([])
-  const [getAllCategorias, setGetAllCategorias] = useState()
+  const [getAllCategorias, setGetAllCategorias] = useState(null)
   const [cart, setCart] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 6
   const [totalProducts, setTotalProducts] = useState(0)
   const [currentCategoryPage, setCurrentCategoryPage] = useState(1)
   const [totalCategories, setTotalCategories] = useState(0)
+  const [banner, setBanner] = useState(null)
+  const [phoneNumber, setPhoneNumber] = useState(null)
+
+  const numberPhone = async () => {
+    try {
+      let { data: phone_numbers, error } = await supabase
+        .from('phone_numbers')
+        .select('*')
+
+      if (error) {
+        console.error('Error al obtener numero:', error)
+        return null
+      }
+
+      setPhoneNumber(phone_numbers[0].phone_number)
+    } catch (error) {
+      console.error('Error al obtener numero:', error)
+    }
+  }
 
   const todosLosProductos = async () => {
     try {
@@ -150,6 +169,21 @@ export const AppProvider = ({ children }) => {
     })
   }
 
+  const todosLosBanners = async () => {
+    try {
+      let { data: allBanners, error } = await supabase
+        .from('banner')
+        .select('*')
+      if (error) {
+        console.error('Error al obtener banners:', error)
+        return null
+      }
+      setBanner(allBanners)
+    } catch (error) {
+      console.error('Error al obtener banners:', error)
+    }
+  }
+
   useEffect(() => {
     getProductos(currentPage)
   }, [currentPage])
@@ -161,6 +195,9 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     todosLosProductos()
     todasLasCategorias()
+    todosLosBanners()
+    numberPhone()
+
     const storedCart = JSON.parse(localStorage.getItem('cart')) || []
     setCart(storedCart)
   }, [])
@@ -191,6 +228,12 @@ export const AppProvider = ({ children }) => {
         nextCategoryPage,
         prevCategoryPage,
         totalCategories,
+        banner,
+        setBanner,
+        todosLosBanners,
+        getCategories,
+        getProductos,
+        phoneNumber,
       }}
     >
       {children}
